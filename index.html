@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eknoc - Digital Door Knock</title>
+    <title>Eknoc - Sales Intelligence Dashboard</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -22,12 +22,9 @@
                             bg: '#F2F4F6',     // Background
                             text: '#191F28',   // Main Text
                             gray: '#B0B8C1',   // Secondary
-                            light: '#E5E8EB',  // Borders/Light GB
-                            card: '#FFFFFF'
-                        },
-                        blue: {
-                            500: '#3182F6',
-                            600: '#1B64DA',
+                            light: '#E5E8EB',  // Borders
+                            card: '#FFFFFF',
+                            dark: '#333D4B'
                         }
                     },
                     fontFamily: {
@@ -39,25 +36,25 @@
                     },
                     boxShadow: {
                         'toss': '0 4px 20px rgba(0, 0, 0, 0.04)',
-                        'toss-hover': '0 10px 25px rgba(0, 0, 0, 0.08)',
-                        'toggle': 'inset 0 2px 4px rgba(0,0,0,0.1)',
+                        'toss-active': '0 10px 30px rgba(49, 130, 246, 0.12)',
+                        'toggle': 'inset 0 2px 4px rgba(0,0,0,0.08)',
                     },
                     letterSpacing: {
                         'toss': '-0.02em',
                     },
                     animation: {
                         'fade-in-up': 'fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-                        'pulse-card': 'pulseCard 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-badge': 'pulseBadge 2s infinite',
+                        'float': 'float 4s ease-in-out infinite',
                     },
                     keyframes: {
                         fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '0%': { opacity: '0', transform: 'translateY(15px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' },
                         },
-                        pulseCard: {
-                            '0%, 100%': { opacity: '1' },
-                            '50%': { opacity: '.95' },
+                        pulseBadge: {
+                            '0%, 100%': { boxShadow: '0 0 0 0 rgba(49, 130, 246, 0.7)' },
+                            '70%': { boxShadow: '0 0 0 6px rgba(49, 130, 246, 0)' },
                         },
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
@@ -87,8 +84,8 @@
         .premium-lock {
             position: absolute;
             inset: 0;
-            backdrop-filter: blur(16px);
-            background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.9) 100%);
+            backdrop-filter: blur(12px);
+            background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.85) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -105,24 +102,28 @@
         .toggle-thumb {
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+        
+        .diamond-gradient {
+            background: linear-gradient(135deg, #3182F6 0%, #1B64DA 100%);
+        }
     </style>
 </head>
 <body class="relative">
 
     <!-- Header -->
-    <header class="fixed top-0 w-full z-50 bg-[#F2F4F6]/90 backdrop-blur-md border-b border-gray-200 transition-all duration-300">
-        <div class="max-w-screen-2xl mx-auto px-6 h-[70px] flex items-center justify-between">
+    <header class="fixed top-0 w-full z-50 bg-[#F2F4F6]/90 backdrop-blur-md border-b border-toss-light transition-all duration-300">
+        <div class="max-w-screen-2xl mx-auto px-6 h-[72px] flex items-center justify-between">
             <div class="flex items-center gap-2 cursor-pointer group" onclick="window.location.reload()">
-                <div class="bg-toss-blue rounded-xl p-1.5 transition-transform group-hover:scale-105">
+                <div class="bg-toss-blue rounded-xl p-1.5 transition-transform group-hover:rotate-6">
                     <span class="material-symbols-outlined text-white text-[24px]">door_front</span>
                 </div>
                 <span class="font-bold text-2xl tracking-toss text-toss-text">eknoc</span>
             </div>
             
             <nav class="hidden md:flex items-center gap-8">
-                <a href="#dashboard-top" class="text-[16px] font-bold text-toss-text relative after:content-[''] after:absolute after:-bottom-[23px] after:left-0 after:w-full after:h-[2px] after:bg-toss-text hover:text-toss-blue transition-colors">Dashboard</a>
-                <a href="#pricing-section" class="text-[16px] font-medium text-toss-gray hover:text-toss-text transition-colors">Pricing</a>
-                <a href="about.html" class="text-[16px] font-medium text-toss-gray hover:text-toss-text transition-colors">About</a>
+                <a href="#dashboard-top" class="text-[15px] font-bold text-toss-text border-b-2 border-toss-text py-6">Intelligence</a>
+                <a href="#pricing-section" class="text-[15px] font-medium text-toss-gray hover:text-toss-text transition-colors">Pricing</a>
+                <a href="about.html" class="text-[15px] font-medium text-toss-gray hover:text-toss-text transition-colors">About</a>
             </nav>
 
             <div class="flex items-center gap-4">
@@ -131,7 +132,7 @@
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
                     </span>
-                    <span class="text-xs font-bold text-gray-600">Live Signals</span>
+                    <span class="text-xs font-bold text-gray-600">Live Feed</span>
                 </div>
                 <!-- Auth Container -->
                 <div id="auth-container">
@@ -144,36 +145,38 @@
     </header>
 
     <!-- Main Content -->
-    <main class="max-w-screen-2xl mx-auto pt-[90px] px-6 lg:px-8 flex flex-col min-h-screen mb-24" id="dashboard-top">
+    <main class="max-w-screen-2xl mx-auto pt-[96px] px-6 lg:px-8 flex flex-col min-h-screen mb-24" id="dashboard-top">
         
         <!-- Welcome / Ticker -->
         <div class="bg-white p-1 rounded-toss shadow-sm mb-8 flex items-center gap-4 overflow-hidden border border-toss-light">
-            <div class="bg-gray-900 text-white px-4 py-2 rounded-[20px] text-xs font-bold shrink-0 ml-1">LIVE</div>
-            <div class="whitespace-nowrap flex gap-10 animate-ticker w-full overflow-hidden" id="news-ticker"></div>
+            <div class="bg-gray-900 text-white px-4 py-2 rounded-[20px] text-xs font-bold shrink-0 ml-1 flex items-center gap-2">
+                <span class="material-symbols-outlined text-[14px] text-green-400">trending_up</span> SIGNAL
+            </div>
+            <div class="whitespace-nowrap flex gap-12 animate-ticker w-full overflow-hidden" id="news-ticker"></div>
         </div>
 
         <!-- Dashboard Title & Refresh -->
         <div class="flex justify-between items-end mb-6 shrink-0">
             <div>
-                <h1 class="text-3xl font-bold text-toss-text mb-1 tracking-toss">Dashboard</h1>
-                <p class="text-toss-gray text-[15px]">Real-time buying intent signals.</p>
+                <h1 class="text-3xl font-bold text-toss-text mb-1 tracking-toss">Sales Intelligence</h1>
+                <p class="text-toss-gray text-[15px]">High-value buying signals tailored for you.</p>
             </div>
             <button onclick="refreshLeads()" class="bg-white hover:bg-gray-50 text-toss-text border border-toss-light px-5 py-3 rounded-2xl font-bold text-[15px] flex items-center gap-2 shadow-toss transition-all hover:-translate-y-0.5 active:scale-95 group">
                 <span class="material-symbols-outlined transition-transform group-hover:rotate-180" id="refresh-icon">sync</span>
-                Refresh List
+                Refresh
             </button>
         </div>
 
         <!-- Layout Grid -->
-        <div class="grid grid-cols-12 gap-8 h-[780px]">
+        <div class="grid grid-cols-12 gap-8 h-[800px]">
             
             <!-- List View -->
             <div class="col-span-12 lg:col-span-4 flex flex-col bg-white rounded-toss shadow-toss border border-toss-light overflow-hidden h-full">
                 <!-- Filters -->
-                <div class="p-5 border-b border-toss-light flex gap-2 overflow-x-auto hide-scrollbar shrink-0 bg-white/50 backdrop-blur-sm z-10 sticky top-0">
-                     <button class="filter-btn active bg-toss-blue text-white px-4 py-2 rounded-full text-xs font-bold transition-all shadow-md transform hover:scale-105" data-category="ALL">All</button>
-                     <button class="filter-btn bg-toss-light text-gray-500 px-4 py-2 rounded-full text-xs font-bold hover:bg-gray-200 transition-all" data-category="Marketing">Marketing</button>
-                     <button class="filter-btn bg-toss-light text-gray-500 px-4 py-2 rounded-full text-xs font-bold hover:bg-gray-200 transition-all" data-category="IT/Security">IT</button>
+                <div class="p-5 border-b border-toss-light flex gap-2 overflow-x-auto hide-scrollbar shrink-0 bg-white/70 backdrop-blur-md z-10 sticky top-0">
+                     <button class="filter-btn active bg-toss-blue text-white px-4 py-2 rounded-pill text-xs font-bold transition-all shadow-md transform active:scale-95" data-category="ALL">All</button>
+                     <button class="filter-btn bg-white border border-toss-light text-gray-500 px-4 py-2 rounded-pill text-xs font-bold hover:bg-gray-50 transition-all" data-category="Retail">Retail</button>
+                     <button class="filter-btn bg-white border border-toss-light text-gray-500 px-4 py-2 rounded-pill text-xs font-bold hover:bg-gray-50 transition-all" data-category="IT/Security">IT</button>
                 </div>
                 <!-- Leads -->
                 <div id="leads-list" class="flex-1 overflow-y-auto p-3 space-y-3 bg-gray-50/50"></div>
@@ -184,11 +187,11 @@
                 <div id="detail-view" class="h-full overflow-y-auto p-10 scroll-smooth">
                     <!-- Empty State -->
                     <div class="h-full flex flex-col items-center justify-center text-center animate-fade-in-up">
-                        <div class="bg-blue-50 w-28 h-28 rounded-full flex items-center justify-center mb-6 animate-float">
-                            <span class="material-symbols-outlined text-toss-blue text-6xl">ads_click</span>
+                        <div class="bg-blue-50 w-32 h-32 rounded-full flex items-center justify-center mb-6 animate-float">
+                            <span class="material-symbols-outlined text-toss-blue text-7xl">ads_click</span>
                         </div>
-                        <h2 class="text-2xl font-bold text-toss-text mb-2">Select a Signal</h2>
-                        <p class="text-toss-gray max-w-sm">Tap on a company from the list to unlock powerful AI insights tailored to your plan.</p>
+                        <h2 class="text-3xl font-bold text-toss-text mb-3">Select a Lead</h2>
+                        <p class="text-toss-gray max-w-sm text-lg">Tap on a company to unlock premium sales intelligence and actionable insights.</p>
                     </div>
                 </div>
             </div>
@@ -200,19 +203,18 @@
         <div class="absolute top-0 w-full h-px bg-gradient-to-r from-transparent via-toss-light to-transparent"></div>
         <div class="max-w-screen-xl mx-auto px-6">
             <div class="text-center mb-16 max-w-2xl mx-auto">
-                <span class="text-toss-blue font-bold uppercase tracking-widest text-sm mb-3 block">Premium Access</span>
-                <h2 class="text-4xl font-bold text-toss-text mb-6">Upgrade Your Intelligence</h2>
-                <p class="text-toss-gray mb-10">Select the plan that fits your growth strategy.</p>
+                <span class="text-toss-blue font-bold uppercase tracking-widest text-sm mb-3 block">Guaranteed ROI</span>
+                <h2 class="text-4xl font-bold text-toss-text mb-6">Intelligence That Pays</h2>
                 
                 <!-- Physical Toggle -->
-                <div class="flex items-center justify-center gap-5 select-none">
+                <div class="flex items-center justify-center gap-6 select-none mt-10">
                     <span class="text-toss-gray font-bold text-sm">Monthly</span>
-                    <div class="w-16 h-9 rounded-full toggle-track relative cursor-pointer p-1 transition-colors duration-300" onclick="toggleBilling(this)" id="billing-track">
-                        <div class="w-7 h-7 bg-white rounded-full toggle-thumb shadow-md absolute left-1 top-1 transition-transform duration-300 transform" id="toggle-circle"></div>
+                    <div class="w-20 h-11 rounded-full toggle-track relative cursor-pointer p-1 transition-colors duration-300" onclick="toggleBilling(this)" id="billing-track">
+                        <div class="w-9 h-9 bg-white rounded-full toggle-thumb shadow-md absolute left-1 top-1 transition-transform duration-300 transform" id="toggle-circle"></div>
                     </div>
                     <span class="text-toss-text font-bold text-sm flex items-center gap-2">
                         Annual 
-                        <span class="bg-blue-50 text-toss-blue text-[10px] px-2 py-0.5 rounded-full font-bold border border-blue-100">-20%</span>
+                        <span class="bg-blue-50 text-toss-blue text-[10px] px-2.5 py-1 rounded-full font-bold border border-blue-100">-20%</span>
                     </span>
                 </div>
             </div>
@@ -222,44 +224,44 @@
                 <div class="p-8 rounded-toss border border-toss-light bg-gray-50 flex flex-col hover:shadow-toss transition-all duration-300 hover:-translate-y-1">
                     <h3 class="text-lg font-bold text-toss-text mb-2">Basic</h3>
                     <div class="flex items-baseline gap-1 mb-6">
-                        <span class="text-4xl font-bold text-toss-text price-val" data-m="59" data-y="47">$59</span>
-                        <span class="text-toss-gray text-sm font-medium billing-period">/mo</span>
+                        <span class="text-[40px] font-bold text-toss-text price-val" data-m="59" data-y="47">$59</span>
+                        <span class="text-toss-gray text-base font-medium billing-period">/mo</span>
                     </div>
                     <ul class="space-y-4 mb-8 flex-1 text-sm font-medium text-gray-600">
-                         <li class="flex items-center gap-3"><span class="material-symbols-outlined text-toss-blue text-[20px]">check_circle</span> Company Metadata</li>
-                         <li class="flex items-center gap-3 opacity-50"><span class="material-symbols-outlined text-gray-400 text-[20px]">lock</span> AI Action Plans</li>
-                         <li class="flex items-center gap-3 opacity-50"><span class="material-symbols-outlined text-gray-400 text-[20px]">lock</span> Investment Insights</li>
+                         <li class="flex items-center gap-3"><span class="material-symbols-outlined text-toss-blue text-[20px]">check</span> Company Profiles</li>
+                         <li class="flex items-center gap-3 opacity-40"><span class="material-symbols-outlined text-gray-400 text-[20px]">lock</span> Strategic Action Plans</li>
+                         <li class="flex items-center gap-3 opacity-40"><span class="material-symbols-outlined text-gray-400 text-[20px]">lock</span> Investment Data</li>
                     </ul>
-                    <button onclick="mockSupabase.auth.signIn('basic@example.com')" class="w-full bg-white border border-toss-light text-toss-text font-bold py-4 rounded-xl hover:bg-gray-100 transition-colors shadow-sm">Start Basic</button>
+                    <button onclick="mockSupabase.auth.signIn('basic@example.com')" class="w-full bg-white border border-toss-light text-toss-text font-bold py-4 rounded-2xl hover:bg-gray-100 transition-colors shadow-sm">Start Basic</button>
                 </div>
                 
                 <!-- Pro -->
-                <div class="p-8 rounded-toss border border-blue-100 bg-blue-50/50 flex flex-col relative shadow-toss hover:shadow-toss-hover transition-all duration-300 hover:-translate-y-2 lg:-mt-4 lg:mb-4 lg:py-12 border-2 border-toss-blue">
-                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-toss-blue text-white px-4 py-1 rounded-full text-xs font-bold shadow-md">MOST POPULAR</div>
-                    <h3 class="text-lg font-bold text-toss-text mb-2 text-toss-blue">Pro</h3>
+                <div class="p-8 rounded-toss border border-blue-100 bg-blue-50/50 flex flex-col relative shadow-toss hover:shadow-toss-active transition-all duration-300 hover:-translate-y-2 lg:-mt-4 lg:mb-4 lg:py-12 border-2 border-toss-blue">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-toss-blue text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-md tracking-wide">MOST POPULAR</div>
+                    <h3 class="text-lg font-bold text-toss-blue mb-2">Pro</h3>
                     <div class="flex items-baseline gap-1 mb-6">
-                        <span class="text-5xl font-bold text-toss-text price-val" data-m="159" data-y="127">$159</span>
-                        <span class="text-toss-gray text-sm font-medium billing-period">/mo</span>
+                        <span class="text-[52px] font-bold text-toss-text price-val" data-m="159" data-y="127">$159</span>
+                        <span class="text-toss-gray text-base font-medium billing-period">/mo</span>
                     </div>
-                    <ul class="space-y-4 mb-8 flex-1 text-sm font-medium text-gray-700">
-                         <li class="flex items-center gap-3"><span class="material-symbols-outlined text-toss-blue text-[20px]">check_circle</span> **Full Strategy & Trigger**</li>
-                         <li class="flex items-center gap-3"><span class="material-symbols-outlined text-toss-blue text-[20px]">check_circle</span> Unlimited Leads View</li>
-                         <li class="flex items-center gap-3 opacity-50"><span class="material-symbols-outlined text-gray-400 text-[20px]">lock</span> Financial Insights</li>
+                    <ul class="space-y-4 mb-8 flex-1 text-sm font-medium text-gray-800">
+                         <li class="flex items-center gap-3"><span class="material-symbols-outlined text-toss-blue text-[20px]">check_circle</span> **Strategic Action Plans**</li>
+                         <li class="flex items-center gap-3"><span class="material-symbols-outlined text-toss-blue text-[20px]">check_circle</span> Trigger Highlights</li>
+                         <li class="flex items-center gap-3 opacity-40"><span class="material-symbols-outlined text-gray-400 text-[20px]">lock</span> Investment & Contacts</li>
                     </ul>
-                    <button onclick="mockSupabase.auth.signIn('pro@example.com')" class="w-full bg-toss-blue text-white font-bold py-4 rounded-xl hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/30">Get Pro</button>
+                    <button onclick="mockSupabase.auth.signIn('pro@example.com')" class="w-full bg-toss-blue text-white font-bold py-4 rounded-2xl hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/30">Get Pro</button>
                 </div>
 
                 <!-- Ultra -->
                 <div class="p-8 rounded-toss border border-gray-200 bg-gray-900 text-white flex flex-col hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
                     <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2"><span class="material-symbols-outlined text-yellow-400">diamond</span> Ultra</h3>
                     <div class="flex items-baseline gap-1 mb-6">
-                        <span class="text-4xl font-bold text-white price-val" data-m="259" data-y="207">$259</span>
-                        <span class="text-gray-400 text-sm font-medium billing-period">/mo</span>
+                        <span class="text-[40px] font-bold text-white price-val" data-m="299" data-y="239">$299</span>
+                        <span class="text-gray-400 text-base font-medium billing-period">/mo</span>
                     </div>
                     <ul class="space-y-4 mb-8 flex-1 text-sm font-medium text-gray-300">
-                         <li class="flex items-center gap-3"><span class="material-symbols-outlined text-green-400 text-[20px]">check_circle</span> **Investment & Sales Fit**</li>
-                         <li class="flex items-center gap-3"><span class="material-symbols-outlined text-green-400 text-[20px]">check_circle</span> **Direct Contact Info**</li>
-                         <li class="flex items-center gap-3"><span class="material-symbols-outlined text-green-400 text-[20px]">check_circle</span> Expert Recommendations</li>
+                         <li class="flex items-center gap-3"><span class="material-symbols-outlined text-green-400 text-[20px]">verified</span> **Investment Deep-Dive**</li>
+                         <li class="flex items-center gap-3"><span class="material-symbols-outlined text-green-400 text-[20px]">verified</span> **Direct Contact Info**</li>
+                         <li class="flex items-center gap-3"><span class="material-symbols-outlined text-green-400 text-[20px]">verified</span> "Killer Question" AI</li>
                     </ul>
                     <button onclick="mockSupabase.auth.signIn('ultra@example.com')" class="w-full bg-white text-gray-900 font-bold py-4 rounded-xl hover:bg-gray-100 transition-colors shadow-lg">Get Ultra</button>
                 </div>
@@ -267,9 +269,9 @@
         </div>
     </section>
 
-    <!-- Floating Action Button -->
-    <button class="fixed bottom-8 right-8 w-14 h-14 bg-toss-blue text-white rounded-full shadow-lg hover:bg-blue-600 hover:scale-110 active:scale-95 transition-all z-40 flex items-center justify-center animate-bounce-subtle" onclick="alert('Support Chat Opening...')">
-        <span class="material-symbols-outlined text-[28px]">chat_bubble</span>
+    <!-- FAB -->
+    <button class="fixed bottom-8 right-8 w-16 h-16 bg-toss-blue text-white rounded-full shadow-toss-active hover:bg-blue-600 hover:scale-110 active:scale-95 transition-all z-40 flex items-center justify-center animate-float" onclick="alert('Concierge Chat Opening...')">
+        <span class="material-symbols-outlined text-[32px]">smart_toy</span>
     </button>
 
     <!-- Login Modal -->
@@ -282,30 +284,30 @@
                 <div class="bg-blue-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                     <span class="material-symbols-outlined text-toss-blue text-3xl">lock_person</span>
                 </div>
-                <h2 class="text-2xl font-bold text-toss-text">Sign In</h2>
-                <p class="text-gray-500 text-sm mt-1">Simulate your subscription tier</p>
+                <h2 class="text-2xl font-bold text-toss-text">Select Tier</h2>
+                <p class="text-gray-500 text-sm mt-1">Experience the dashboard as:</p>
             </div>
             
             <div class="space-y-3">
                 <button onclick="mockSupabase.auth.signIn('basic@example.com')" class="w-full p-4 rounded-2xl bg-gray-50 border border-gray-100 hover:bg-gray-100 text-left flex items-center gap-4 transition-all group">
                     <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-500 shadow-sm border border-gray-100 font-bold group-hover:bg-gray-200">B</div>
                     <div>
-                        <div class="font-bold text-toss-text text-sm">Basic User</div>
-                        <div class="text-xs text-toss-gray">Restricted Access</div>
+                        <div class="font-bold text-toss-text text-sm">Basic</div>
+                        <div class="text-xs text-toss-gray">Limited View</div>
                     </div>
                 </button>
                 <button onclick="mockSupabase.auth.signIn('pro@example.com')" class="w-full p-4 rounded-2xl bg-blue-50 border border-blue-100 hover:bg-blue-100 text-left flex items-center gap-4 transition-all group">
                     <div class="w-10 h-10 rounded-full bg-toss-blue flex items-center justify-center text-white shadow-sm font-bold">P</div>
                     <div>
-                        <div class="font-bold text-toss-text text-sm">Pro User</div>
+                        <div class="font-bold text-toss-text text-sm">Pro</div>
                         <div class="text-xs text-toss-blue/80">Strategy Unlocked</div>
                     </div>
                 </button>
                 <button onclick="mockSupabase.auth.signIn('ultra@example.com')" class="w-full p-4 rounded-2xl bg-gray-900 border border-gray-800 hover:bg-gray-800 text-left flex items-center gap-4 transition-all group">
                     <div class="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white shadow-sm font-bold">U</div>
                     <div>
-                        <div class="font-bold text-white text-sm">Ultra User</div>
-                        <div class="text-xs text-gray-400">All Access + Contacts</div>
+                        <div class="font-bold text-white text-sm">Ultra</div>
+                        <div class="text-xs text-gray-400">Full Intelligence</div>
                     </div>
                 </button>
             </div>
@@ -326,7 +328,7 @@
                     updateAuthUI();
                     closeModal('login-modal', 'login-content');
                     if (activeId) selectLead(activeId);
-                    showToast(`Logged in as ${plan}`);
+                    showToast(`Logged in as ${plan} User`);
                     scrollToTop();
                 },
                 signOut: () => {
@@ -340,40 +342,43 @@
         }
         const mockSupabase = new MockSupabaseClient();
 
-        // --- Data ---
+        // --- HIGH VALUE DATA ---
         const LEAD_DATA = [
             { 
-                id: 1, company: "TechFlow Inc.", category: "IT/Security", score: 94, scores: { u: 95, s: 88, f: 92 },
+                id: 1, company: "T&T Supermarket", category: "Retail", score: 98, scores: { u: 98, s: 95, f: 90 },
+                location: "North York", founded: "1993", size: "500+", revenue: "$500M+", 
+                trigger: "Loblaw's $66M Expansion Project", 
+                action_plan: "Pitch localized digital marketing & SEO for new 50,000 sq ft location at 5095 Yonge St.", 
+                investment_signal: "Confirmed: Received $66M capital injection for expansion. Massive hiring and infrastructure budget approved.",
+                sales_fit: "High fit: Need immediate visibility for the new branch. Their current SEO for 'North York Asian Grocery' is weak.",
+                killer_question: "With the 50k sqft expansion at Yonge & Empress, how are you handling the localized SEO for the new Asian demographic inflow?",
+                expert_rec: "Focus on 'Grand Opening' digital campaigns. Mention their competitor H-Mart's recent ad spend.",
+                dm_persona: "Corporate Executioner. Focus on Timeline & KPIs.",
+                contact: { name: "Tina Lee", title: "CEO", email: "tina.lee@tnt.ca", phone: "+1 416-555-8888" } 
+            },
+            { 
+                id: 2, company: "TechFlow Inc.", category: "IT/Security", score: 94, scores: { u: 95, s: 88, f: 92 },
                 location: "San Francisco", founded: "2015", size: "100+", revenue: "$15M", 
                 trigger: "Series B Funding ($30M)", 
                 action_plan: "Pitch scalable cloud security suite. Focus on compliance.", 
-                funding_insight: "Recently raised $30M led by Sequoia. 40% earmarked for engineering expansion.",
+                investment_signal: "recently raised $30M led by Sequoia. 40% earmarked for engineering expansion.",
                 sales_fit: "High fit for IT Services: Rapid scaling means they outgrew their current MSSP.",
+                killer_question: "How does your current SOC handles the 3x data load from your Series B expansion?",
                 expert_rec: "Highlight your SOC 2 Type II certification.",
                 dm_persona: "Technical Founder. Value Speed > Cost.",
                 contact: { name: "Sarah Jones", title: "CTO", email: "sarah@techflow.io", phone: "+1 415-555-0123" } 
             },
             { 
-                id: 2, company: "GreenLeaf", category: "Interior/Office", score: 85, scores: { u: 80, s: 75, f: 90 },
+                id: 3, company: "GreenLeaf", category: "Interior/Office", score: 85, scores: { u: 80, s: 75, f: 90 },
                 location: "Austin", founded: "2018", size: "50+", revenue: "$5M", 
                 trigger: "New Office Lease (15k sqft)", 
                 action_plan: "Offer ergonomic furniture packages + layout design.", 
-                funding_insight: "Self-funded profitability reached. Recent local grant ($500k).",
-                sales_fit: "Medium fit: Focus on 'Green/Sustainable' angle.",
+                investment_signal: "Self-funded profitability reached. Recent local grant ($500k).",
+                sales_fit: "Medium fit: Focus on 'Green/Sustainable' angle. Rebranding as eco-conscious.",
+                killer_question: "Are you planning to LEED certify the new 15k sqft office?",
                 expert_rec: "Pitch 'Reclaimed Wood' custom desks.",
                 dm_persona: "Aesthetic-focused. Visuals matter.",
                 contact: { name: "Mike Chen", title: "Ops Director", email: "mike@greenleaf.com", phone: "+1 512-555-0999" } 
-            },
-            { 
-                id: 3, company: "Nexus Mktg", category: "Marketing", score: 88, scores: { u: 90, s: 60, f: 95 },
-                location: "NYC", founded: "2020", size: "20+", revenue: "$2M", 
-                trigger: "Hired new CMO", 
-                action_plan: "Propose AI-driven ad optimization tools.", 
-                funding_insight: "Seed round extended. Partners from AdTech.",
-                sales_fit: "Very High fit for MarTech: CMO used similar tools at unicorn exit.",
-                expert_rec: "Drop 'Campaign ROI' stats in subject line.",
-                dm_persona: "Data-driven. Show metrics.",
-                contact: { name: "Jessica Day", title: "VP Marketing", email: "jess@nexus.nyc", phone: "+1 212-555-4000" } 
             },
         ];
 
@@ -403,17 +408,12 @@
             }
         }
 
-        // --- Logic: 3-Tier Gate ---
-        // Basic: Header Only. Blur Strategy + Investment + Contact.
-        // Pro: Sees Strategy. Blur Investment + Contact.
-        // Ultra: Sees Everything.
+        // --- Tier Logic ---
         function checkAccess(tierRequired) {
             const user = mockSupabase.auth.user();
             const plan = user ? user.plan : 'Guest';
             const plans = ['Guest', 'Basic', 'Pro', 'Ultra'];
-            const userLevel = plans.indexOf(plan);
-            const reqLevel = plans.indexOf(tierRequired);
-            return userLevel >= reqLevel;
+            return plans.indexOf(plan) >= plans.indexOf(tierRequired);
         }
 
         function renderList() {
@@ -422,16 +422,18 @@
             leads.forEach((lead, index) => {
                 const isActive = lead.id === activeId;
                 const delay = index * 50; 
+                // Diamond Logic
+                const isDiamond = lead.score >= 95; // Higher threshold for T&T
+                
                 const el = document.createElement('div');
-                el.className = `p-5 rounded-[20px] cursor-pointer transition-all border relative overflow-hidden group hover:-translate-y-1 duration-300 animate-fade-in-up ${isActive ? 'bg-white border-toss-blue ring-1 ring-blue-100 shadow-toss' : 'bg-white border-transparent hover:shadow-toss hover:bg-white'}`;
+                el.className = `p-5 rounded-[20px] cursor-pointer transition-all border relative overflow-hidden group hover:-translate-y-1 duration-300 animate-fade-in-up ${isActive ? 'bg-white border-toss-blue ring-1 ring-blue-100 shadow-toss-active' : 'bg-white border-transparent hover:shadow-toss hover:bg-white'}`;
                 el.style.animationDelay = `${delay}ms`;
                 el.onclick = () => selectLead(lead.id);
                 
-                if (lead.score >= 90) {
-                    const badge = document.createElement('div');
-                    badge.className = "absolute top-0 right-0 bg-gradient-to-bl from-blue-400 to-blue-600 text-white text-[9px] font-bold px-2 py-1.5 rounded-bl-[16px] shadow-sm z-10";
-                    badge.innerText = "DIAMOND";
-                    el.appendChild(badge);
+                if (isDiamond) {
+                    el.innerHTML += `<div class="absolute top-0 right-0 bg-gray-900 text-white text-[9px] font-bold px-3 py-1.5 rounded-bl-[16px] shadow-sm z-10 flex items-center gap-1"><span class="material-symbols-outlined text-[10px] text-yellow-400">diamond</span> DIAMOND</div>`;
+                } else if (lead.score >= 90) {
+                     el.innerHTML += `<div class="absolute top-0 right-0 bg-blue-500 text-white text-[9px] font-bold px-2 py-1 rounded-bl-[16px] shadow-sm z-10">HOT</div>`;
                 }
 
                 el.innerHTML += `
@@ -440,11 +442,11 @@
                         <span class="text-[11px] text-gray-400 font-medium">${lead.location}</span>
                     </div>
                     <h3 class="font-bold text-toss-text text-[17px] mb-2 group-hover:text-toss-blue transition-colors">${lead.company}</h3>
-                    <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-3">
                          <div class="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden flex-1 max-w-[80px]">
-                             <div class="h-full ${lead.score>=90 ? 'bg-blue-500' : 'bg-gray-400'}" style="width: ${lead.score}%"></div>
+                             <div class="h-full ${isDiamond ? 'diamond-gradient' : (lead.score>=90 ? 'bg-blue-500' : 'bg-gray-400')}" style="width: ${lead.score}%"></div>
                          </div>
-                         <span class="text-xs font-bold text-gray-500">${lead.score}</span>
+                         <span class="text-xs font-bold text-gray-900">${lead.score}</span>
                     </div>
                 `;
                 list.appendChild(el);
@@ -459,42 +461,41 @@
             detail.innerHTML = ''; 
 
             const canViewStrategy = checkAccess('Pro');
-            const canViewInvestment = checkAccess('Ultra'); // Strict Interpretation: Investment is Ultra
-            const canViewContact = checkAccess('Ultra');
+            const canViewUltra = checkAccess('Ultra'); 
 
             setTimeout(() => {
                 detail.innerHTML = `
                     <div class="animate-fade-in-up pb-20">
-                        <!-- Header (Always Visible) -->
+                        <!-- Hero Header -->
                         <div class="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-10">
                             <div>
                                 <div class="flex items-center gap-3 mb-4">
                                     <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-pill text-xs font-bold uppercase tracking-wider">${lead.category}</span>
-                                    ${lead.score >= 90 ? '<span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-pill text-xs font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">diamond</span> Top Tier</span>' : ''}
+                                    ${lead.score >= 98 ? '<span class="bg-gray-900 text-white px-3 py-1 rounded-pill text-xs font-bold flex items-center gap-1 shadow-md"><span class="material-symbols-outlined text-[14px] text-yellow-400">diamond</span> Diamond Priority</span>' : ''}
                                 </div>
                                 <h1 class="text-4xl font-bold text-toss-text mb-2 tracking-tight">${lead.company}</h1>
                                 <div class="flex flex-wrap gap-4 text-gray-500 text-sm font-medium mt-4">
                                      <span class="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg"><span class="material-symbols-outlined text-[18px]">calendar_month</span> ${lead.founded}</span>
                                      <span class="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg"><span class="material-symbols-outlined text-[18px]">groups</span> ${lead.size}</span>
-                                     <span class="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg"><span class="material-symbols-outlined text-[18px]">payments</span> ${lead.revenue}</span>
+                                     <span class="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg"><span class="material-symbols-outlined text-[18px]">paid</span> ${lead.revenue}</span>
                                 </div>
                             </div>
                             <div class="bg-white rounded-[24px] border border-gray-100 p-1 shadow-sm w-[140px] h-[140px] shrink-0 relative">
                                 <canvas id="scoreChart"></canvas>
-                                <div class="absolute bottom-2 inset-x-0 text-center text-[10px] font-bold text-gray-400">SCORE FIT</div>
+                                <div class="absolute bottom-2 inset-x-0 text-center text-[10px] font-bold text-gray-400">DMA MATCH</div>
                             </div>
                         </div>
 
-                        <!-- 1. Strategic Execution (Pro+) -->
+                        <!-- 1. Strategy & Action (Pro) -->
                         <div class="mb-8 p-1">
-                            <h3 class="text-gray-900 font-bold text-lg mb-4 flex items-center gap-2">Strategic Execution <span class="text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded-md font-bold">PRO</span></h3>
+                            <h3 class="text-gray-900 font-bold text-lg mb-4 flex items-center gap-2">Strategic Analysis <span class="text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded-md font-bold">PRO</span></h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
-                                ${!canViewStrategy ? getLockOverlay('Unlock with Pro', 'Access Trigger Events & Action Plans') : ''}
+                                ${!canViewStrategy ? getLockOverlay('Unlock Strategy', 'See Trigger Events & Action Plans') : ''}
                                 
                                 <div class="bg-white p-6 rounded-toss border border-toss-light shadow-sm hover:shadow-toss transition-shadow ${!canViewStrategy ? 'filter blur-sm opacity-60' : ''}">
                                     <div class="flex items-center gap-3 mb-3">
                                         <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-500"><span class="material-symbols-outlined text-[18px]">bolt</span></div>
-                                        <h4 class="font-bold text-gray-900 text-sm">Signal Highlight</h4>
+                                        <h4 class="font-bold text-gray-900 text-sm">Trigger Event</h4>
                                     </div>
                                     <p class="text-gray-700 text-sm leading-relaxed">${lead.trigger}</p>
                                 </div>
@@ -508,38 +509,52 @@
                             </div>
                         </div>
 
-                        <!-- 2. Premium Intelligence (Ultra) -->
+                        <!-- 2. High Value Intelligence (Ultra) -->
                         <div class="mb-8 p-1">
-                            <h3 class="text-gray-900 font-bold text-lg mb-4 flex items-center gap-2">Investment & Insight <span class="text-xs bg-gray-900 text-white px-2 py-0.5 rounded-md font-bold">ULTRA</span></h3>
-                            <div class="relative bg-white border border-gray-200 rounded-toss p-6 overflow-hidden">
-                                ${!canViewInvestment ? getLockOverlay('Unlock with Ultra', 'See Funding, Sales Fit & Expert Recs') : ''}
+                            <h3 class="text-primary font-bold text-lg mb-4 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-yellow-500">lock_open_right</span> 
+                                High-Value Intelligence <span class="text-xs bg-gray-900 text-white px-2 py-0.5 rounded-md font-bold">ULTRA</span>
+                            </h3>
+                            
+                            <div class="relative bg-white border border-gray-200 rounded-toss p-0 overflow-hidden shadow-sm">
+                                ${!canViewUltra ? getLockOverlay('Unlock Deep Intel', 'See Investment, "Killer Question" & Persona') : ''}
                                 
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 ${!canViewInvestment ? 'filter blur-md opacity-40' : ''}">
-                                    <div>
-                                        <div class="mb-6">
-                                            <h4 class="text-green-600 font-bold text-xs uppercase mb-2">Funding Insight</h4>
-                                            <p class="text-gray-800 font-medium leading-relaxed">${lead.funding_insight}</p>
-                                        </div>
+                                <div class="p-8 ${!canViewUltra ? 'filter blur-md opacity-40' : ''}">
+                                    <!-- Killer Question (Hero Feature) -->
+                                    <div class="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-6 text-white mb-8 shadow-lg relative overflow-hidden">
+                                        <div class="absolute top-0 right-0 p-4 opacity-10"><span class="material-symbols-outlined text-6xl">forum</span></div>
+                                        <h4 class="text-green-400 font-bold text-xs uppercase mb-2 tracking-widest flex items-center gap-2"><span class="material-symbols-outlined text-sm">key</span> THE KILLER QUESTION</h4>
+                                        <p class="text-xl font-medium leading-relaxed font-serif italic">"${lead.killer_question}"</p>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                        <!-- Money -->
                                         <div>
-                                            <h4 class="text-blue-600 font-bold text-xs uppercase mb-2">Sales Fit Analysis</h4>
+                                            <div class="flex items-center gap-2 mb-3">
+                                                <span class="material-symbols-outlined text-green-600">payments</span>
+                                                <h4 class="font-bold text-gray-900 text-sm uppercase tracking-wide">Investment Signal</h4>
+                                            </div>
+                                            <p class="text-gray-800 font-medium leading-relaxed border-l-2 border-green-500 pl-4 py-1 bg-green-50/50 rounded-r-lg">${lead.investment_signal}</p>
+                                        </div>
+                                        <!-- Fit -->
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-3">
+                                                <span class="material-symbols-outlined text-blue-600">handshake</span>
+                                                <h4 class="font-bold text-gray-900 text-sm uppercase tracking-wide">Strategic Fit</h4>
+                                            </div>
                                             <p class="text-gray-600 text-sm leading-relaxed">${lead.sales_fit}</p>
                                         </div>
                                     </div>
-                                    <div class="bg-gray-50 rounded-[20px] p-5 border border-gray-100">
-                                        <div class="flex items-start gap-3">
-                                            <span class="material-symbols-outlined text-yellow-500 mt-1">lightbulb</span>
-                                            <div>
-                                                <h4 class="font-bold text-gray-900 text-sm mb-1">Expert Recommendation</h4>
-                                                <p class="text-gray-600 text-xs italic leading-relaxed">"${lead.expert_rec}"</p>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-start gap-3 mt-4 pt-4 border-t border-gray-200">
-                                            <span class="material-symbols-outlined text-purple-500 mt-1">face</span>
-                                            <div>
-                                                <h4 class="font-bold text-gray-900 text-sm mb-1">Decision Maker Persona</h4>
-                                                <p class="text-gray-600 text-xs leading-relaxed">${lead.dm_persona}</p>
-                                            </div>
-                                        </div>
+                                    
+                                    <div class="mt-8 pt-8 border-t border-gray-100 flex gap-6">
+                                         <div class="w-1/2">
+                                            <h4 class="font-bold text-gray-900 text-xs uppercase mb-1">Expert Rec</h4>
+                                            <p class="text-gray-500 text-xs">"${lead.expert_rec}"</p>
+                                         </div>
+                                         <div class="w-1/2">
+                                            <h4 class="font-bold text-gray-900 text-xs uppercase mb-1">DM Persona</h4>
+                                            <span class="inline-block bg-gray-100 px-2 py-1 rounded-md text-gray-600 text-xs font-bold">${lead.dm_persona}</span>
+                                         </div>
                                     </div>
                                 </div>
                             </div>
@@ -547,8 +562,8 @@
 
                         <!-- 3. Direct Contact (Ultra) -->
                         <div class="relative">
-                             ${!canViewContact ? getLockOverlay('Unlock Contact Info', 'Get Direct Phone & Email Access') : ''}
-                            <div class="bg-gray-900 text-white rounded-toss p-6 flex items-center justify-between ${!canViewContact ? 'filter blur-lg opacity-40' : ''}">
+                             ${!canViewUltra ? getLockOverlay('Unlock Direct Contact', 'Bypass Gatekeepers') : ''}
+                            <div class="bg-gray-900 text-white rounded-toss p-6 flex items-center justify-between shadow-lg ${!canViewUltra ? 'filter blur-lg opacity-40' : ''}">
                                 <div class="flex items-center gap-4">
                                     <img src="https://ui-avatars.com/api/?name=${lead.contact.name}&background=random" class="w-14 h-14 rounded-full border-2 border-white/20">
                                     <div>
@@ -556,9 +571,9 @@
                                         <p class="text-gray-400 text-sm">${lead.contact.title}</p>
                                     </div>
                                 </div>
-                                <div class="flex gap-3">
-                                    <a href="mailto:${lead.contact.email}" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><span class="material-symbols-outlined text-sm">mail</span></a>
-                                    <a href="tel:${lead.contact.phone}" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><span class="material-symbols-outlined text-sm">call</span></a>
+                                <div class="flex gap-4">
+                                    <a href="mailto:${lead.contact.email}" class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full hover:bg-white/20 transition-all font-bold text-sm"><span class="material-symbols-outlined text-sm">mail</span> Email</a>
+                                    <a href="tel:${lead.contact.phone}" class="flex items-center gap-2 bg-green-500 px-4 py-2 rounded-full hover:bg-green-600 transition-all font-bold text-sm text-white shadow-lg shadow-green-900/20"><span class="material-symbols-outlined text-sm">call</span> Call</a>
                                 </div>
                             </div>
                         </div>
@@ -572,12 +587,12 @@
         function getLockOverlay(title, subtitle) {
             return `
                 <div class="premium-lock">
-                    <div class="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center mb-3 text-toss-blue">
-                        <span class="material-symbols-outlined">lock</span>
+                    <div class="w-14 h-14 rounded-full bg-white shadow-toss-active flex items-center justify-center mb-4 text-toss-blue animate-pulse-badge">
+                        <span class="material-symbols-outlined text-[28px]">lock</span>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-1">${title}</h3>
-                    <p class="text-gray-500 text-sm font-medium mb-4">${subtitle}</p>
-                    <button onclick="document.getElementById('pricing-section').scrollIntoView({behavior:'smooth'})" class="bg-toss-blue text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md hover:bg-blue-600 transition-colors transform hover:-translate-y-0.5">Upgrade Plan</button>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2 tracking-tight">${title}</h3>
+                    <p class="text-gray-500 text-base font-medium mb-6 text-center max-w-xs">${subtitle}</p>
+                    <button onclick="document.getElementById('pricing-section').scrollIntoView({behavior:'smooth'})" class="bg-toss-blue text-white px-8 py-3 rounded-2xl text-sm font-bold shadow-lg hover:bg-blue-600 hover:-translate-y-1 transition-all">Upgrade Now</button>
                 </div>
             `;
         }
@@ -591,11 +606,11 @@
                     labels: ['Urgency', 'Scale', 'Fit'],
                     datasets: [{
                         data: [lead.scores.u, lead.scores.s, lead.scores.f],
-                        backgroundColor: 'rgba(49, 130, 246, 0.2)',
+                        backgroundColor: 'rgba(49, 130, 246, 0.15)',
                         borderColor: '#3182F6',
                         borderWidth: 2,
                         pointBackgroundColor: '#3182F6',
-                        pointRadius: 2
+                        pointRadius: 0
                     }]
                 },
                 options: {
@@ -604,8 +619,8 @@
                     scales: {
                         r: {
                             angleLines: { display: false },
-                            grid: { color: '#E5E8EB' },
-                            pointLabels: { font: { size: 9, weight: 'bold', family: 'Pretendard' }, color: '#6B7684' },
+                            grid: { color: '#E5E8EB', circular: true },
+                            pointLabels: { font: { size: 9, weight: '700', family: 'Pretendard' }, color: '#6B7684' },
                             suggestedMin: 50, suggestedMax: 100, ticks: { display: false }
                         }
                     },
@@ -628,7 +643,7 @@
         function toggleBilling(track) {
             isAnnual = !isAnnual;
             const circle = document.getElementById('toggle-circle');
-            circle.style.transform = isAnnual ? 'translateX(28px)' : 'translateX(0)';
+            circle.style.transform = isAnnual ? 'translateX(36px)' : 'translateX(0)';
             track.classList.toggle('bg-blue-100', isAnnual);
             track.classList.toggle('bg-gray-200', !isAnnual);
             
@@ -654,7 +669,7 @@
 
         function showToast(msg) {
              const t = document.createElement('div');
-             t.className = 'fixed bottom-24 right-8 bg-gray-800 text-white px-6 py-3 rounded-full font-bold shadow-xl animate-fade-in-up z-[60] flex items-center gap-3 text-sm';
+             t.className = 'fixed bottom-24 right-8 bg-gray-900 text-white px-6 py-3 rounded-full font-bold shadow-2xl animate-fade-in-up z-[60] flex items-center gap-3 text-sm';
              t.innerHTML = `<span class="material-symbols-outlined text-green-400">check_circle</span> ${msg}`;
              document.body.appendChild(t); setTimeout(() => t.remove(), 3000);
         }
@@ -662,7 +677,7 @@
         function refreshLeads() {
              const btn = document.getElementById('refresh-icon');
              btn.classList.add('animate-spin');
-             setTimeout(() => { btn.classList.remove('animate-spin'); leads.sort(() => Math.random() - 0.5); renderList(); showToast("Leads Refreshed"); }, 800);
+             setTimeout(() => { btn.classList.remove('animate-spin'); leads.sort(() => Math.random() - 0.5); renderList(); showToast("Signals Updated"); }, 800);
         }
 
         function scrollToTop() { document.getElementById('dashboard-top').scrollIntoView({behavior:'smooth'}); }
@@ -671,23 +686,21 @@
         const style = document.createElement('style');
         style.innerHTML = `
             @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-            .animate-ticker { animation: ticker 30s linear infinite; }
+            .animate-ticker { animation: ticker 40s linear infinite; }
             .animate-ticker:hover { animation-play-state: paused; }
         `;
         document.head.appendChild(style);
 
-        const news = ["TechFlow: $30M Series B - High Intent", "Nexus Mktg: New CMO Hired - Needs Tools", "GreenLeaf: 15k sqft Office Lease - Expansion"];
+        const news = ["T&T Supermarket: $66M Expansion Confirmed (North York)", "TechFlow: Series B Round Closed ($30M)", "Loblaw: New Digital Strategy Announced"];
         document.getElementById('news-ticker').innerHTML = [...news, ...news, ...news].map(i => `
             <div class="flex items-center gap-2 px-6">
-                <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                 <span class="text-sm font-medium text-gray-700">${i}</span>
             </div>
         `).join('');
 
         renderList();
         
-        // Init with Basic
-        // setTimeout(() => mockSupabase.auth.signIn('basic@example.com'), 1000); // Auto-login for demo? No, let user explore.
     </script>
 </body>
 </html>

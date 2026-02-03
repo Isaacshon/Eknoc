@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="antialiased">
+<html lang="en" class="antialiased scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,117 +17,125 @@
             theme: {
                 extend: {
                     colors: {
-                        // Toss Color Palette
-                        gray: {
-                            50: '#F9FAFB',
-                            100: '#F2F4F6', // Main Background
-                            200: '#E5E8EB',
-                            300: '#D1D6DB',
-                            400: '#B0B8C1',
-                            500: '#8B95A1', // Secondary Text
-                            600: '#6B7684',
-                            700: '#4E5968',
-                            800: '#333D4B',
-                            900: '#191F28', // Primary Text
+                        toss: {
+                            blue: '#3182F6',   // Primary
+                            bg: '#F2F4F6',     // Background
+                            text: '#191F28',   // Main Text
+                            gray: '#B0B8C1',   // Secondary
+                            light: '#E5E8EB',  // Borders/Light GB
+                            card: '#FFFFFF'
                         },
                         blue: {
-                            50: '#E8F3FF',
-                            100: '#C9E2FF',
-                            500: '#3182F6', // Primary Brand Color
+                            500: '#3182F6',
                             600: '#1B64DA',
-                            900: '#194AA6',
-                        },
-                        toss: {
-                            bg: '#F2F4F6',
-                            card: '#FFFFFF',
                         }
                     },
                     fontFamily: {
-                        sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'sans-serif'],
+                        sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'Helvetica Neue', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'toss': '24px',
+                        'pill': '9999px',
                     },
                     boxShadow: {
                         'toss': '0 4px 20px rgba(0, 0, 0, 0.04)',
-                        'toss-hover': '0 10px 25px rgba(0, 0, 0, 0.06)',
+                        'toss-hover': '0 10px 25px rgba(0, 0, 0, 0.08)',
+                        'toggle': 'inset 0 2px 4px rgba(0,0,0,0.1)',
+                    },
+                    letterSpacing: {
+                        'toss': '-0.02em',
                     },
                     animation: {
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'spin-fast': 'spin 0.7s linear infinite',
+                        'fade-in-up': 'fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pulse-card': 'pulseCard 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        pulseCard: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '.95' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-6px)' },
+                        }
                     }
                 }
             }
         }
     </script>
 
-    <!-- Pretendard Font (Subset via JSDelivr) -->
+    <!-- Pretendard Font -->
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard-dynamic-subset.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <style>
         body {
-            background-color: #F2F4F6; /* Toss Grey 100 */
-            color: #191F28;           /* Toss Grey 900 */
+            background-color: #F2F4F6;
+            color: #191F28;
+            font-family: 'Pretendard', sans-serif;
+            letter-spacing: -0.02em;
         }
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        html {
-            scroll-behavior: smooth;
-        }
-        /* Number Fade Transition */
-        .price-text {
-            transition: opacity 0.2s ease-in-out;
-        }
-        .fade-out {
-            opacity: 0;
-        }
-        /* Blur Overlays */
-        .blur-overlay {
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Glassmorphism Lock Overlay */
+        .premium-lock {
             position: absolute;
             inset: 0;
-            backdrop-filter: blur(12px);
-            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(16px);
+            background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.9) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            z-index: 10;
+            z-index: 20;
+            border-radius: 24px;
+        }
+        
+        /* Toggle Switch */
+        .toggle-track {
+            background-color: #E5E8EB;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+        }
+        .toggle-thumb {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
     </style>
 </head>
-<body>
+<body class="relative">
 
-    <!-- Desktop Header -->
-    <header class="fixed top-0 w-full z-50 bg-[#F2F4F6]/90 backdrop-blur-md border-b border-gray-200 transition-all duration-300" id="header">
-        <div class="max-w-screen-2xl mx-auto px-8 h-[70px] flex items-center justify-between">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
-                <div class="bg-blue-500 rounded-lg p-1.5">
+    <!-- Header -->
+    <header class="fixed top-0 w-full z-50 bg-[#F2F4F6]/90 backdrop-blur-md border-b border-gray-200 transition-all duration-300">
+        <div class="max-w-screen-2xl mx-auto px-6 h-[70px] flex items-center justify-between">
+            <div class="flex items-center gap-2 cursor-pointer group" onclick="window.location.reload()">
+                <div class="bg-toss-blue rounded-xl p-1.5 transition-transform group-hover:scale-105">
                     <span class="material-symbols-outlined text-white text-[24px]">door_front</span>
                 </div>
-                <span class="font-bold text-2xl tracking-tight text-gray-900">eknoc</span>
+                <span class="font-bold text-2xl tracking-toss text-toss-text">eknoc</span>
             </div>
             
             <nav class="hidden md:flex items-center gap-8">
-                <a href="#dashboard-top" class="text-[15px] font-bold text-gray-900 border-b-2 border-gray-900 py-6">Dashboard</a>
-                <a href="#pricing-section" class="text-[15px] font-medium text-gray-500 hover:text-gray-900 transition-colors">Pricing</a>
-                <a href="about.html" class="text-[15px] font-medium text-gray-500 hover:text-gray-900 transition-colors">About</a>
-                <a href="contact.html" class="text-[15px] font-medium text-gray-500 hover:text-gray-900 transition-colors">Contact</a>
+                <a href="#dashboard-top" class="text-[16px] font-bold text-toss-text relative after:content-[''] after:absolute after:-bottom-[23px] after:left-0 after:w-full after:h-[2px] after:bg-toss-text hover:text-toss-blue transition-colors">Dashboard</a>
+                <a href="#pricing-section" class="text-[16px] font-medium text-toss-gray hover:text-toss-text transition-colors">Pricing</a>
+                <a href="about.html" class="text-[16px] font-medium text-toss-gray hover:text-toss-text transition-colors">About</a>
             </nav>
 
             <div class="flex items-center gap-4">
-                <div class="hidden lg:flex items-center gap-2 bg-white border border-gray-200 rounded-full px-3 py-1.5 shadow-sm">
+                <div class="hidden lg:flex items-center gap-2 bg-white border border-toss-light rounded-full px-3 py-1.5 shadow-sm">
                     <span class="relative flex h-2.5 w-2.5">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                         <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
                     </span>
                     <span class="text-xs font-bold text-gray-600">Live Signals</span>
                 </div>
-                <!-- Auth / Plan Badge -->
+                <!-- Auth Container -->
                 <div id="auth-container">
-                    <button id="auth-btn" onclick="handleAuthClick()" class="bg-gray-900 hover:bg-gray-800 text-white px-5 py-2.5 rounded-[12px] font-semibold text-sm transition-colors shadow-lg shadow-gray-900/20 flex items-center gap-2">
+                    <button onclick="handleAuthClick()" class="bg-toss-text hover:bg-gray-800 text-white px-5 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-lg shadow-gray-900/10 flex items-center gap-2 hover:-translate-y-0.5">
                         Login
                     </button>
                 </div>
@@ -135,313 +143,308 @@
         </div>
     </header>
 
-    <!-- Main Dashboard Section -->
-    <main class="max-w-screen-2xl mx-auto pt-[80px] px-8 flex flex-col min-h-screen mb-20" id="dashboard-top">
+    <!-- Main Content -->
+    <main class="max-w-screen-2xl mx-auto pt-[90px] px-6 lg:px-8 flex flex-col min-h-screen mb-24" id="dashboard-top">
         
-        <!-- Interactive Ticker -->
-        <div class="bg-gray-900 text-white text-sm py-2 px-4 rounded-lg mb-6 flex items-center gap-3 overflow-hidden shadow-lg relative shrink-0">
-            <span class="font-bold text-green-400 shrink-0 flex items-center gap-1">
-                <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                </span>
-                LIVE
-            </span>
-            <div class="whitespace-nowrap flex gap-10 animate-ticker" id="news-ticker"></div>
-            <div class="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-gray-900 to-transparent"></div>
+        <!-- Welcome / Ticker -->
+        <div class="bg-white p-1 rounded-toss shadow-sm mb-8 flex items-center gap-4 overflow-hidden border border-toss-light">
+            <div class="bg-gray-900 text-white px-4 py-2 rounded-[20px] text-xs font-bold shrink-0 ml-1">LIVE</div>
+            <div class="whitespace-nowrap flex gap-10 animate-ticker w-full overflow-hidden" id="news-ticker"></div>
         </div>
 
-        <!-- Dashboard Toolbar -->
-        <div class="flex justify-between items-end mb-6 shrink-0 z-20">
+        <!-- Dashboard Title & Refresh -->
+        <div class="flex justify-between items-end mb-6 shrink-0">
             <div>
-                <h1 class="text-[28px] font-bold text-gray-900 mb-1 flex items-center gap-2">
-                    Sales Signals
-                    <span class="text-gray-400 text-lg font-normal">/ Dashboard</span>
-                </h1>
-                <p class="text-gray-500 text-[15px]">Real-time buying intent signals tailored for you.</p>
+                <h1 class="text-3xl font-bold text-toss-text mb-1 tracking-toss">Dashboard</h1>
+                <p class="text-toss-gray text-[15px]">Real-time buying intent signals.</p>
             </div>
-            <div class="flex gap-3">
-                <button id="refresh-btn" onclick="refreshLeads()" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 px-5 py-3 rounded-[16px] font-bold text-[15px] flex items-center gap-2 shadow-sm transition-all hover:scale-105 active:scale-95">
-                    <span class="material-symbols-outlined" id="refresh-icon">sync</span>
-                    Refresh
-                </button>
-            </div>
+            <button onclick="refreshLeads()" class="bg-white hover:bg-gray-50 text-toss-text border border-toss-light px-5 py-3 rounded-2xl font-bold text-[15px] flex items-center gap-2 shadow-toss transition-all hover:-translate-y-0.5 active:scale-95 group">
+                <span class="material-symbols-outlined transition-transform group-hover:rotate-180" id="refresh-icon">sync</span>
+                Refresh List
+            </button>
         </div>
 
-        <!-- Split View Content -->
-        <div class="grid grid-cols-12 gap-6 h-[750px] relative z-10">
+        <!-- Layout Grid -->
+        <div class="grid grid-cols-12 gap-8 h-[780px]">
             
-            <!-- Left Panel: Lead List -->
-            <div class="col-span-12 lg:col-span-4 flex flex-col bg-white rounded-[24px] shadow-toss border border-gray-100 overflow-hidden">
-                <div class="p-4 border-b border-gray-100 flex items-center justify-between gap-2 overflow-x-auto hide-scrollbar whitespace-nowrap shrink-0">
-                    <div class="flex gap-2">
-                        <button class="filter-btn active bg-gray-900 text-white px-3 py-1.5 rounded-full text-xs font-semibold transition-colors" data-category="ALL">All</button>
-                        <button class="filter-btn bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-gray-200 transition-colors" data-category="Marketing">Marketing</button>
-                        <button class="filter-btn bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-gray-200 transition-colors" data-category="IT/Security">IT</button>
-                    </div>
+            <!-- List View -->
+            <div class="col-span-12 lg:col-span-4 flex flex-col bg-white rounded-toss shadow-toss border border-toss-light overflow-hidden h-full">
+                <!-- Filters -->
+                <div class="p-5 border-b border-toss-light flex gap-2 overflow-x-auto hide-scrollbar shrink-0 bg-white/50 backdrop-blur-sm z-10 sticky top-0">
+                     <button class="filter-btn active bg-toss-blue text-white px-4 py-2 rounded-full text-xs font-bold transition-all shadow-md transform hover:scale-105" data-category="ALL">All</button>
+                     <button class="filter-btn bg-toss-light text-gray-500 px-4 py-2 rounded-full text-xs font-bold hover:bg-gray-200 transition-all" data-category="Marketing">Marketing</button>
+                     <button class="filter-btn bg-toss-light text-gray-500 px-4 py-2 rounded-full text-xs font-bold hover:bg-gray-200 transition-all" data-category="IT/Security">IT</button>
                 </div>
-                <!-- List -->
-                <div id="leads-list" class="flex-1 overflow-y-auto p-2 space-y-2"></div>
+                <!-- Leads -->
+                <div id="leads-list" class="flex-1 overflow-y-auto p-3 space-y-3 bg-gray-50/50"></div>
             </div>
 
-            <!-- Right Panel: Lead Detail (Tiered UI) -->
-            <div class="col-span-12 lg:col-span-8 bg-white rounded-[24px] shadow-toss border border-gray-100 overflow-hidden relative hidden lg:block">
-                <div id="detail-view" class="h-full overflow-y-auto p-10 flex flex-col">
+            <!-- Detailed View -->
+            <div class="col-span-12 lg:col-span-8 bg-white rounded-toss shadow-toss border border-toss-light overflow-hidden h-full relative hidden lg:block">
+                <div id="detail-view" class="h-full overflow-y-auto p-10 scroll-smooth">
                     <!-- Empty State -->
-                    <div class="m-auto text-center animate-pulse-slow">
-                        <div class="bg-blue-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <span class="material-symbols-outlined text-blue-500 text-5xl">ads_click</span>
+                    <div class="h-full flex flex-col items-center justify-center text-center animate-fade-in-up">
+                        <div class="bg-blue-50 w-28 h-28 rounded-full flex items-center justify-center mb-6 animate-float">
+                            <span class="material-symbols-outlined text-toss-blue text-6xl">ads_click</span>
                         </div>
-                        <h2 class="text-2xl font-bold text-gray-900 mb-2">Select a Signal</h2>
-                        <p class="text-gray-500">Select a lead to view Tier-specific insights.</p>
+                        <h2 class="text-2xl font-bold text-toss-text mb-2">Select a Signal</h2>
+                        <p class="text-toss-gray max-w-sm">Tap on a company from the list to unlock powerful AI insights tailored to your plan.</p>
                     </div>
                 </div>
             </div>
-
         </div>
     </main>
 
     <!-- Pricing Section -->
-    <section id="pricing-section" class="py-20 bg-white border-t border-gray-100">
-        <div class="max-w-screen-xl mx-auto px-8">
-            <div class="text-center mb-16">
-                <span class="text-blue-500 font-bold uppercase tracking-widest text-sm mb-2 block">Subscription Plans</span>
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Unlock Your Full Sales Potential</h2>
-                <div class="flex items-center justify-center gap-4 mt-8">
-                    <span class="text-gray-500 font-medium">Monthly</span>
-                    <button class="w-14 h-8 bg-blue-500 rounded-full relative transition-colors shadow-inner" onclick="toggleBilling(this)">
-                        <div class="w-6 h-6 bg-white rounded-full absolute top-1 left-1 shadow-sm transition-transform duration-300" id="pricing-toggle-circle"></div>
-                    </button>
-                    <span class="text-gray-900 font-bold">Annual <span class="bg-blue-100 text-blue-600 text-xs px-2 py-0.5 rounded-full ml-1">-20%</span></span>
+    <section id="pricing-section" class="py-24 bg-white relative">
+        <div class="absolute top-0 w-full h-px bg-gradient-to-r from-transparent via-toss-light to-transparent"></div>
+        <div class="max-w-screen-xl mx-auto px-6">
+            <div class="text-center mb-16 max-w-2xl mx-auto">
+                <span class="text-toss-blue font-bold uppercase tracking-widest text-sm mb-3 block">Premium Access</span>
+                <h2 class="text-4xl font-bold text-toss-text mb-6">Upgrade Your Intelligence</h2>
+                <p class="text-toss-gray mb-10">Select the plan that fits your growth strategy.</p>
+                
+                <!-- Physical Toggle -->
+                <div class="flex items-center justify-center gap-5 select-none">
+                    <span class="text-toss-gray font-bold text-sm">Monthly</span>
+                    <div class="w-16 h-9 rounded-full toggle-track relative cursor-pointer p-1 transition-colors duration-300" onclick="toggleBilling(this)" id="billing-track">
+                        <div class="w-7 h-7 bg-white rounded-full toggle-thumb shadow-md absolute left-1 top-1 transition-transform duration-300 transform" id="toggle-circle"></div>
+                    </div>
+                    <span class="text-toss-text font-bold text-sm flex items-center gap-2">
+                        Annual 
+                        <span class="bg-blue-50 text-toss-blue text-[10px] px-2 py-0.5 rounded-full font-bold border border-blue-100">-20%</span>
+                    </span>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Data: Starter -->
-                <div class="bg-gray-50 p-8 rounded-[32px] border border-gray-200 flex flex-col">
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Basic</h3>
-                    <div class="mb-6 price-text" id="price-starter"><span class="text-4xl font-bold text-gray-900">$59.9</span> <span class="text-gray-400">/mo CAD</span></div>
-                    <ul class="space-y-4 mb-8 flex-1">
-                         <li class="flex items-center gap-3 text-gray-600"><span class="material-symbols-outlined text-blue-600">check_circle</span> See Company Meta Data</li>
-                         <li class="flex items-center gap-3 text-gray-400"><span class="material-symbols-outlined">lock</span> No Premium Insights</li>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
+                <!-- Basic -->
+                <div class="p-8 rounded-toss border border-toss-light bg-gray-50 flex flex-col hover:shadow-toss transition-all duration-300 hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-toss-text mb-2">Basic</h3>
+                    <div class="flex items-baseline gap-1 mb-6">
+                        <span class="text-4xl font-bold text-toss-text price-val" data-m="59" data-y="47">$59</span>
+                        <span class="text-toss-gray text-sm font-medium billing-period">/mo</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1 text-sm font-medium text-gray-600">
+                         <li class="flex items-center gap-3"><span class="material-symbols-outlined text-toss-blue text-[20px]">check_circle</span> Company Metadata</li>
+                         <li class="flex items-center gap-3 opacity-50"><span class="material-symbols-outlined text-gray-400 text-[20px]">lock</span> AI Action Plans</li>
+                         <li class="flex items-center gap-3 opacity-50"><span class="material-symbols-outlined text-gray-400 text-[20px]">lock</span> Investment Insights</li>
                     </ul>
-                    <button onclick="mockBilling('Basic')" class="w-full bg-white border border-gray-200 text-gray-900 font-bold py-4 rounded-2xl hover:bg-gray-50 transition-colors">Start Basic</button>
+                    <button onclick="mockSupabase.auth.signIn('basic@example.com')" class="w-full bg-white border border-toss-light text-toss-text font-bold py-4 rounded-xl hover:bg-gray-100 transition-colors shadow-sm">Start Basic</button>
                 </div>
-                <!-- Data: Pro -->
-                <div class="bg-gray-900 p-8 rounded-[32px] border border-gray-800 flex flex-col relative shadow-2xl transform md:-translate-y-4">
-                    <h3 class="text-xl font-bold text-white mb-2">Pro</h3>
-                    <div class="mb-6 price-text" id="price-pro"><span class="text-4xl font-bold text-white">$159.9</span> <span class="text-gray-400">/mo CAD</span></div>
-                    <ul class="space-y-4 mb-8 flex-1">
-                         <li class="flex items-center gap-3 text-white"><span class="material-symbols-outlined text-blue-500">check_circle</span> <strong>Funding & Sales Fit</strong></li>
-                         <li class="flex items-center gap-3 text-white"><span class="material-symbols-outlined text-blue-500">check_circle</span> Trigger Events</li>
-                         <li class="flex items-center gap-3 text-gray-500"><span class="material-symbols-outlined">lock</span> No Direct Contacts</li>
+                
+                <!-- Pro -->
+                <div class="p-8 rounded-toss border border-blue-100 bg-blue-50/50 flex flex-col relative shadow-toss hover:shadow-toss-hover transition-all duration-300 hover:-translate-y-2 lg:-mt-4 lg:mb-4 lg:py-12 border-2 border-toss-blue">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-toss-blue text-white px-4 py-1 rounded-full text-xs font-bold shadow-md">MOST POPULAR</div>
+                    <h3 class="text-lg font-bold text-toss-text mb-2 text-toss-blue">Pro</h3>
+                    <div class="flex items-baseline gap-1 mb-6">
+                        <span class="text-5xl font-bold text-toss-text price-val" data-m="159" data-y="127">$159</span>
+                        <span class="text-toss-gray text-sm font-medium billing-period">/mo</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1 text-sm font-medium text-gray-700">
+                         <li class="flex items-center gap-3"><span class="material-symbols-outlined text-toss-blue text-[20px]">check_circle</span> **Full Strategy & Trigger**</li>
+                         <li class="flex items-center gap-3"><span class="material-symbols-outlined text-toss-blue text-[20px]">check_circle</span> Unlimited Leads View</li>
+                         <li class="flex items-center gap-3 opacity-50"><span class="material-symbols-outlined text-gray-400 text-[20px]">lock</span> Financial Insights</li>
                     </ul>
-                    <button onclick="mockBilling('Pro')" class="w-full bg-blue-500 text-white font-bold py-4 rounded-2xl hover:bg-blue-600 transition-colors">Get Pro</button>
+                    <button onclick="mockSupabase.auth.signIn('pro@example.com')" class="w-full bg-toss-blue text-white font-bold py-4 rounded-xl hover:bg-blue-600 transition-colors shadow-lg shadow-blue-500/30">Get Pro</button>
                 </div>
-                <!-- Data: Ultra -->
-                <div class="bg-gray-50 p-8 rounded-[32px] border border-gray-200 flex flex-col">
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Ultra</h3>
-                    <div class="mb-6 price-text" id="price-growth"><span class="text-4xl font-bold text-gray-900">$259.9</span> <span class="text-gray-400">/mo CAD</span></div>
-                    <ul class="space-y-4 mb-8 flex-1">
-                         <li class="flex items-center gap-3 text-gray-600"><span class="material-symbols-outlined text-blue-600">check_circle</span> All Pro Features</li>
-                         <li class="flex items-center gap-3 text-gray-600"><span class="material-symbols-outlined text-blue-600">check_circle</span> <strong>Expert Recs & Persona</strong></li>
-                         <li class="flex items-center gap-3 text-gray-600"><span class="material-symbols-outlined text-blue-600">check_circle</span> <strong>Direct Contact Info</strong></li>
+
+                <!-- Ultra -->
+                <div class="p-8 rounded-toss border border-gray-200 bg-gray-900 text-white flex flex-col hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+                    <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2"><span class="material-symbols-outlined text-yellow-400">diamond</span> Ultra</h3>
+                    <div class="flex items-baseline gap-1 mb-6">
+                        <span class="text-4xl font-bold text-white price-val" data-m="259" data-y="207">$259</span>
+                        <span class="text-gray-400 text-sm font-medium billing-period">/mo</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1 text-sm font-medium text-gray-300">
+                         <li class="flex items-center gap-3"><span class="material-symbols-outlined text-green-400 text-[20px]">check_circle</span> **Investment & Sales Fit**</li>
+                         <li class="flex items-center gap-3"><span class="material-symbols-outlined text-green-400 text-[20px]">check_circle</span> **Direct Contact Info**</li>
+                         <li class="flex items-center gap-3"><span class="material-symbols-outlined text-green-400 text-[20px]">check_circle</span> Expert Recommendations</li>
                     </ul>
-                    <button onclick="mockBilling('Ultra')" class="w-full bg-white border border-gray-200 text-gray-900 font-bold py-4 rounded-2xl hover:bg-gray-50 transition-colors">Get Ultra</button>
+                    <button onclick="mockSupabase.auth.signIn('ultra@example.com')" class="w-full bg-white text-gray-900 font-bold py-4 rounded-xl hover:bg-gray-100 transition-colors shadow-lg">Get Ultra</button>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Floating Action Button -->
+    <button class="fixed bottom-8 right-8 w-14 h-14 bg-toss-blue text-white rounded-full shadow-lg hover:bg-blue-600 hover:scale-110 active:scale-95 transition-all z-40 flex items-center justify-center animate-bounce-subtle" onclick="alert('Support Chat Opening...')">
+        <span class="material-symbols-outlined text-[28px]">chat_bubble</span>
+    </button>
+
     <!-- Login Modal -->
-    <div id="login-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] hidden items-center justify-center opacity-0 transition-opacity duration-300">
-        <div class="bg-white w-full max-w-md rounded-[32px] p-8 shadow-2xl relative transform scale-95 transition-transform duration-300" id="login-content">
-            <button onclick="closeModal('login-modal', 'login-content')" class="absolute top-6 right-6 p-2 text-gray-400 hover:text-gray-900">
+    <div id="login-modal" class="fixed inset-0 bg-black/40 backdrop-blur-md z-[100] hidden items-center justify-center opacity-0 transition-opacity duration-300">
+        <div class="bg-white w-full max-w-sm rounded-[32px] p-8 shadow-2xl relative transform scale-95 transition-transform duration-300" id="login-content">
+            <button onclick="closeModal('login-modal', 'login-content')" class="absolute top-6 right-6 p-2 text-toss-gray hover:text-toss-text transition-colors">
                 <span class="material-symbols-outlined">close</span>
             </button>
             <div class="text-center mb-8">
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">Sign In</h2>
-                <p class="text-gray-500 text-sm">Select a persona to test Tiered Access.</p>
+                <div class="bg-blue-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-toss-blue text-3xl">lock_person</span>
+                </div>
+                <h2 class="text-2xl font-bold text-toss-text">Sign In</h2>
+                <p class="text-gray-500 text-sm mt-1">Simulate your subscription tier</p>
             </div>
             
-            <button onclick="mockSupabase.auth.signIn('basic@example.com')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-900 font-bold py-3.5 rounded-xl mb-3 flex items-center justify-center gap-3 transition-colors">
-                 Basic User (Tests Blurs)
-            </button>
-            <button onclick="mockSupabase.auth.signIn('pro@example.com')" class="w-full bg-blue-100 text-blue-700 hover:bg-blue-200 font-bold py-3.5 rounded-xl mb-3 flex items-center justify-center gap-3 transition-colors">
-                 Pro User (Sees Insights)
-            </button>
-            <button onclick="mockSupabase.auth.signIn('ultra@example.com')" class="w-full bg-gray-900 text-white hover:bg-gray-800 font-bold py-3.5 rounded-xl flex items-center justify-center gap-3 transition-colors">
-                Ultra User (Sees everything)
-            </button>
+            <div class="space-y-3">
+                <button onclick="mockSupabase.auth.signIn('basic@example.com')" class="w-full p-4 rounded-2xl bg-gray-50 border border-gray-100 hover:bg-gray-100 text-left flex items-center gap-4 transition-all group">
+                    <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-500 shadow-sm border border-gray-100 font-bold group-hover:bg-gray-200">B</div>
+                    <div>
+                        <div class="font-bold text-toss-text text-sm">Basic User</div>
+                        <div class="text-xs text-toss-gray">Restricted Access</div>
+                    </div>
+                </button>
+                <button onclick="mockSupabase.auth.signIn('pro@example.com')" class="w-full p-4 rounded-2xl bg-blue-50 border border-blue-100 hover:bg-blue-100 text-left flex items-center gap-4 transition-all group">
+                    <div class="w-10 h-10 rounded-full bg-toss-blue flex items-center justify-center text-white shadow-sm font-bold">P</div>
+                    <div>
+                        <div class="font-bold text-toss-text text-sm">Pro User</div>
+                        <div class="text-xs text-toss-blue/80">Strategy Unlocked</div>
+                    </div>
+                </button>
+                <button onclick="mockSupabase.auth.signIn('ultra@example.com')" class="w-full p-4 rounded-2xl bg-gray-900 border border-gray-800 hover:bg-gray-800 text-left flex items-center gap-4 transition-all group">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center text-white shadow-sm font-bold">U</div>
+                    <div>
+                        <div class="font-bold text-white text-sm">Ultra User</div>
+                        <div class="text-xs text-gray-400">All Access + Contacts</div>
+                    </div>
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- Scripts -->
     <script>
-        // --- Mock Supabase Client ---
+        // --- Mock Supabase ---
         class MockSupabaseClient {
-            constructor() {
-                this.currentUser = null;
-            }
+            constructor() { this.currentUser = null; }
             auth = {
                 signIn: (email) => {
                     let plan = 'Basic';
                     if (email.includes('pro')) plan = 'Pro';
                     if (email.includes('ultra')) plan = 'Ultra';
-                    
-                    this.currentUser = { email, plan, id: 'user_' + Date.now() };
+                    this.currentUser = { email, plan, id: 'u_'+Date.now() };
                     updateAuthUI();
                     closeModal('login-modal', 'login-content');
-                    if (activeId) selectLead(activeId); 
-                    showToast(`Signed in as ${plan} User`);
+                    if (activeId) selectLead(activeId);
+                    showToast(`Logged in as ${plan}`);
+                    scrollToTop();
                 },
                 signOut: () => {
                     this.currentUser = null;
                     updateAuthUI();
                     if (activeId) selectLead(activeId);
-                    showToast('Signed out');
+                    showToast('Logged out');
                 },
                 user: () => this.currentUser
             }
         }
         const mockSupabase = new MockSupabaseClient();
 
-        // --- Data (Enhanced) ---
+        // --- Data ---
         const LEAD_DATA = [
             { 
-                id: 1, 
-                company: "TechFlow Inc.", 
-                category: "IT/Security", 
-                score: 94, 
-                scores: { urgency: 95, scale: 88, fit: 92 },
-                location: "San Francisco", 
-                founded: "2015", 
-                size: "100+", 
-                revenue: "$15M", 
+                id: 1, company: "TechFlow Inc.", category: "IT/Security", score: 94, scores: { u: 95, s: 88, f: 92 },
+                location: "San Francisco", founded: "2015", size: "100+", revenue: "$15M", 
                 trigger: "Series B Funding ($30M)", 
                 action_plan: "Pitch scalable cloud security suite. Focus on compliance.", 
-                funding_insight: "Recently raised $30M led by Sequoia. 40% earmarked for engineering expansion in Vancouver branch.",
-                sales_fit: "High fit for IT Services: Rapid scaling means they outgrew their current MSSP. They need enterprise-grade pentesting immediately.",
-                expert_rec: "Highlight your SOC 2 Type II certification. The CTO, Sarah, mentioned 'compliance fatigue' in a recent podcast.",
-                dm_persona: "Technical Founder. Value Speed > Cost. Doesn't like sales fluff. Use technical jargon.",
+                funding_insight: "Recently raised $30M led by Sequoia. 40% earmarked for engineering expansion.",
+                sales_fit: "High fit for IT Services: Rapid scaling means they outgrew their current MSSP.",
+                expert_rec: "Highlight your SOC 2 Type II certification.",
+                dm_persona: "Technical Founder. Value Speed > Cost.",
                 contact: { name: "Sarah Jones", title: "CTO", email: "sarah@techflow.io", phone: "+1 415-555-0123" } 
             },
             { 
-                id: 2, 
-                company: "GreenLeaf", 
-                category: "Interior/Office", 
-                score: 85,
-                scores: { urgency: 80, scale: 75, fit: 90 },
-                location: "Austin", 
-                founded: "2018", 
-                size: "50+", 
-                revenue: "$5M", 
+                id: 2, company: "GreenLeaf", category: "Interior/Office", score: 85, scores: { u: 80, s: 75, f: 90 },
+                location: "Austin", founded: "2018", size: "50+", revenue: "$5M", 
                 trigger: "New Office Lease (15k sqft)", 
                 action_plan: "Offer ergonomic furniture packages + layout design.", 
-                funding_insight: "Self-funded profitability reached. Recent local grant for sustainable practices ($500k).",
-                sales_fit: "Medium fit for Interior: Focus on 'Green/Sustainable' angle. They are rebranding as eco-conscious.",
-                expert_rec: "Pitch 'Reclaimed Wood' custom desks. Their CEO posted about sustainability on LinkedIn last week.",
-                dm_persona: "Aesthetic-focused. Visuals matter more than specs. Bring samples.",
+                funding_insight: "Self-funded profitability reached. Recent local grant ($500k).",
+                sales_fit: "Medium fit: Focus on 'Green/Sustainable' angle.",
+                expert_rec: "Pitch 'Reclaimed Wood' custom desks.",
+                dm_persona: "Aesthetic-focused. Visuals matter.",
                 contact: { name: "Mike Chen", title: "Ops Director", email: "mike@greenleaf.com", phone: "+1 512-555-0999" } 
             },
             { 
-                id: 3, 
-                company: "Nexus Mktg", 
-                category: "Marketing", 
-                score: 88,
-                scores: { urgency: 90, scale: 60, fit: 95 },
-                location: "NYC", 
-                founded: "2020", 
-                size: "20+", 
-                revenue: "$2M", 
+                id: 3, company: "Nexus Mktg", category: "Marketing", score: 88, scores: { u: 90, s: 60, f: 95 },
+                location: "NYC", founded: "2020", size: "20+", revenue: "$2M", 
                 trigger: "Hired new CMO", 
                 action_plan: "Propose AI-driven ad optimization tools.", 
-                funding_insight: "Seed round extended. Bringing in strategic partners from AdTech.",
-                sales_fit: "Very High fit for MarTech: The new CMO (Jessica) used similar tools at her last unicorn exit.",
-                expert_rec: "Drop 'Campaign ROI' stats in the subject line. Jessica is data-obsessed.",
-                dm_persona: "Data-driven. Show me the metrics. Short attention span.",
+                funding_insight: "Seed round extended. Partners from AdTech.",
+                sales_fit: "Very High fit for MarTech: CMO used similar tools at unicorn exit.",
+                expert_rec: "Drop 'Campaign ROI' stats in subject line.",
+                dm_persona: "Data-driven. Show metrics.",
                 contact: { name: "Jessica Day", title: "VP Marketing", email: "jess@nexus.nyc", phone: "+1 212-555-4000" } 
             },
         ];
 
-        // --- State ---
         let leads = [...LEAD_DATA];
         let activeId = null;
-        let activeCategory = 'ALL';
         let isAnnual = false;
         let chartInstance = null;
 
-        // --- UI Logic ---
         function updateAuthUI() {
             const container = document.getElementById('auth-container');
             const user = mockSupabase.auth.user();
-            
             if (user) {
-                let badgeColor = 'bg-gray-200 text-gray-700'; 
-                if (user.plan === 'Pro') badgeColor = 'bg-blue-100 text-blue-700';
-                if (user.plan === 'Ultra') badgeColor = 'bg-gray-900 text-white';
+                let badgeClass = 'bg-gray-200 text-gray-700'; 
+                if (user.plan === 'Pro') badgeClass = 'bg-blue-100 text-blue-700';
+                if (user.plan === 'Ultra') badgeClass = 'bg-gray-900 text-white';
 
                 container.innerHTML = `
                     <div class="flex items-center gap-3">
-                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${badgeColor}">${user.plan}</span>
-                        <div onclick="mockSupabase.auth.signOut()" class="w-9 h-9 bg-gray-200 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-300">
-                             <span class="material-symbols-outlined text-[18px]">logout</span>
+                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${badgeClass}">${user.plan}</span>
+                        <div onclick="mockSupabase.auth.signOut()" class="w-10 h-10 bg-white border border-gray-200 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-50 shadow-sm transition-transform hover:scale-105" title="Sign Out">
+                             <span class="material-symbols-outlined text-[20px] text-gray-600">logout</span>
                         </div>
                     </div>
                 `;
             } else {
-                container.innerHTML = `
-                    <button onclick="openModal('login-modal', 'login-content')" class="bg-gray-900 hover:bg-gray-800 text-white px-5 py-2.5 rounded-[12px] font-semibold text-sm transition-colors shadow-lg shadow-gray-900/20 flex items-center gap-2">
-                        Login
-                    </button>
-                `;
+                container.innerHTML = `<button onclick="handleAuthClick()" class="bg-toss-text hover:bg-gray-800 text-white px-5 py-2.5 rounded-2xl font-bold text-sm transition-all shadow-lg shadow-gray-900/10 flex items-center gap-2 hover:-translate-y-0.5">Login</button>`;
             }
         }
 
-        function checkAccess(field) {
+        // --- Logic: 3-Tier Gate ---
+        // Basic: Header Only. Blur Strategy + Investment + Contact.
+        // Pro: Sees Strategy. Blur Investment + Contact.
+        // Ultra: Sees Everything.
+        function checkAccess(tierRequired) {
             const user = mockSupabase.auth.user();
             const plan = user ? user.plan : 'Guest';
-            
-            // Logic Table
-            if (field === 'market_context') { // Investment & Fit
-                return ['Pro', 'Ultra'].includes(plan);
-            }
-            if (field === 'expert_strategy') { // Expert Rec & Persona (Ultra only)
-                return plan === 'Ultra';
-            }
-            if (field === 'contact') {
-                return plan === 'Ultra';
-            }
-            return false; // Default
+            const plans = ['Guest', 'Basic', 'Pro', 'Ultra'];
+            const userLevel = plans.indexOf(plan);
+            const reqLevel = plans.indexOf(tierRequired);
+            return userLevel >= reqLevel;
         }
 
         function renderList() {
             const list = document.getElementById('leads-list');
             list.innerHTML = '';
-            
-            leads.forEach(lead => {
+            leads.forEach((lead, index) => {
                 const isActive = lead.id === activeId;
-                const isDiamond = lead.score >= 90;
-                
+                const delay = index * 50; 
                 const el = document.createElement('div');
-                el.className = `p-5 rounded-[16px] cursor-pointer transition-all border relative overflow-hidden ${isActive ? 'bg-blue-50 border-blue-500 shadow-sm' : 'bg-white border-transparent hover:bg-gray-50'}`;
+                el.className = `p-5 rounded-[20px] cursor-pointer transition-all border relative overflow-hidden group hover:-translate-y-1 duration-300 animate-fade-in-up ${isActive ? 'bg-white border-toss-blue ring-1 ring-blue-100 shadow-toss' : 'bg-white border-transparent hover:shadow-toss hover:bg-white'}`;
+                el.style.animationDelay = `${delay}ms`;
                 el.onclick = () => selectLead(lead.id);
                 
-                let diamondBadge = '';
-                if (isDiamond) {
-                    diamondBadge = `<div class="absolute top-0 right-0 bg-gradient-to-bl from-blue-400 to-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded-bl-xl shadow-sm z-10">DIAMOND</div>`;
+                if (lead.score >= 90) {
+                    const badge = document.createElement('div');
+                    badge.className = "absolute top-0 right-0 bg-gradient-to-bl from-blue-400 to-blue-600 text-white text-[9px] font-bold px-2 py-1.5 rounded-bl-[16px] shadow-sm z-10";
+                    badge.innerText = "DIAMOND";
+                    el.appendChild(badge);
                 }
 
-                el.innerHTML = `
-                    ${diamondBadge}
+                el.innerHTML += `
                     <div class="flex justify-between mb-2">
-                        <span class="text-xs font-bold ${isActive ? 'text-blue-600' : 'text-gray-500'} uppercase tracking-wide">${lead.category}</span>
-                        <span class="text-xs text-gray-400">${lead.location}</span>
+                        <span class="text-[11px] font-bold ${isActive ? 'text-blue-600' : 'text-gray-400'} uppercase tracking-wider">${lead.category}</span>
+                        <span class="text-[11px] text-gray-400 font-medium">${lead.location}</span>
                     </div>
-                    <h3 class="font-bold text-gray-900 text-lg mb-1">${lead.company}</h3>
+                    <h3 class="font-bold text-toss-text text-[17px] mb-2 group-hover:text-toss-blue transition-colors">${lead.company}</h3>
                     <div class="flex items-center gap-2">
-                        <div class="h-1.5 w-1.5 rounded-full ${lead.score > 90 ? 'bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.6)]' : 'bg-gray-400'}"></div>
-                        <span class="text-sm text-gray-600 font-medium">Score: ${lead.score}</span>
+                         <div class="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden flex-1 max-w-[80px]">
+                             <div class="h-full ${lead.score>=90 ? 'bg-blue-500' : 'bg-gray-400'}" style="width: ${lead.score}%"></div>
+                         </div>
+                         <span class="text-xs font-bold text-gray-500">${lead.score}</span>
                     </div>
                 `;
                 list.appendChild(el);
@@ -452,188 +455,166 @@
             activeId = id;
             renderList();
             const lead = leads.find(l => l.id === id);
-            
             const detail = document.getElementById('detail-view');
             detail.innerHTML = ''; 
 
-            const hasMarket = checkAccess('market_context');
-            const hasExpert = checkAccess('expert_strategy');
-            const hasContact = checkAccess('contact');
+            const canViewStrategy = checkAccess('Pro');
+            const canViewInvestment = checkAccess('Ultra'); // Strict Interpretation: Investment is Ultra
+            const canViewContact = checkAccess('Ultra');
 
             setTimeout(() => {
                 detail.innerHTML = `
                     <div class="animate-fade-in-up pb-20">
-                        <!-- Header -->
-                        <div class="grid grid-cols-12 gap-8 mb-8">
-                            <div class="col-span-8">
-                                <div class="flex items-center gap-3 mb-3">
-                                    <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">${lead.category}</span>
-                                    ${lead.score >= 90 ? '<span class="bg-blue-50 text-blue-600 px-2 py-1 rounded-full text-xs font-bold flex items-center gap-1 border border-blue-100"><span class="material-symbols-outlined text-[14px]">diamond</span> Top Priority</span>' : ''}
+                        <!-- Header (Always Visible) -->
+                        <div class="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-10">
+                            <div>
+                                <div class="flex items-center gap-3 mb-4">
+                                    <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-pill text-xs font-bold uppercase tracking-wider">${lead.category}</span>
+                                    ${lead.score >= 90 ? '<span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-pill text-xs font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">diamond</span> Top Tier</span>' : ''}
                                 </div>
-                                <h1 class="text-4xl font-bold text-gray-900 mb-2">${lead.company}</h1>
-                                <div class="flex gap-4 text-gray-500 text-sm font-medium mt-4">
-                                     <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">calendar_month</span> ${lead.founded}</span>
-                                     <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">groups</span> ${lead.size}</span>
-                                     <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">payments</span> ${lead.revenue}</span>
+                                <h1 class="text-4xl font-bold text-toss-text mb-2 tracking-tight">${lead.company}</h1>
+                                <div class="flex flex-wrap gap-4 text-gray-500 text-sm font-medium mt-4">
+                                     <span class="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg"><span class="material-symbols-outlined text-[18px]">calendar_month</span> ${lead.founded}</span>
+                                     <span class="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg"><span class="material-symbols-outlined text-[18px]">groups</span> ${lead.size}</span>
+                                     <span class="flex items-center gap-1.5 bg-gray-50 px-3 py-1.5 rounded-lg"><span class="material-symbols-outlined text-[18px]">payments</span> ${lead.revenue}</span>
                                 </div>
                             </div>
-                            
-                            <!-- Diamond Score Visual -->
-                            <div class="col-span-4 bg-white rounded-[24px] border border-gray-100 p-2 shadow-sm relative h-40 w-full flex items-center justify-center">
+                            <div class="bg-white rounded-[24px] border border-gray-100 p-1 shadow-sm w-[140px] h-[140px] shrink-0 relative">
                                 <canvas id="scoreChart"></canvas>
+                                <div class="absolute bottom-2 inset-x-0 text-center text-[10px] font-bold text-gray-400">SCORE FIT</div>
                             </div>
                         </div>
 
-                        <!-- Basic Info (Always Visible) -->
-                        <div class="bg-gray-50 p-6 rounded-[24px] border border-gray-100 mb-6">
-                            <div class="flex items-center gap-3 mb-3">
-                                <span class="material-symbols-outlined text-orange-500">bolt</span>
-                                <h3 class="font-bold text-gray-900">Trigger Event</h3>
+                        <!-- 1. Strategic Execution (Pro+) -->
+                        <div class="mb-8 p-1">
+                            <h3 class="text-gray-900 font-bold text-lg mb-4 flex items-center gap-2">Strategic Execution <span class="text-xs bg-blue-100 text-blue-600 px-2 py-0.5 rounded-md font-bold">PRO</span></h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+                                ${!canViewStrategy ? getLockOverlay('Unlock with Pro', 'Access Trigger Events & Action Plans') : ''}
+                                
+                                <div class="bg-white p-6 rounded-toss border border-toss-light shadow-sm hover:shadow-toss transition-shadow ${!canViewStrategy ? 'filter blur-sm opacity-60' : ''}">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-500"><span class="material-symbols-outlined text-[18px]">bolt</span></div>
+                                        <h4 class="font-bold text-gray-900 text-sm">Signal Highlight</h4>
+                                    </div>
+                                    <p class="text-gray-700 text-sm leading-relaxed">${lead.trigger}</p>
+                                </div>
+                                <div class="bg-blue-50/50 p-6 rounded-toss border border-blue-100 shadow-sm ${!canViewStrategy ? 'filter blur-sm opacity-60' : ''}">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600"><span class="material-symbols-outlined text-[18px]">psychology</span></div>
+                                        <h4 class="font-bold text-blue-900 text-sm">Action Plan</h4>
+                                    </div>
+                                    <p class="text-blue-800 text-sm leading-relaxed">${lead.action_plan}</p>
+                                </div>
                             </div>
-                            <p class="text-gray-700 font-medium leading-relaxed bg-white p-4 rounded-xl shadow-sm">${lead.trigger}</p>
                         </div>
 
-                        <!-- Premium Insights Section -->
-                        <div class="mb-8">
-                            <h3 class="text-blue-500 font-bold text-sm uppercase mb-4 tracking-wider flex items-center gap-2"><span class="material-symbols-outlined text-sm">auto_awesome</span> Premium Intelligence</h3>
-                            
-                            <div class="grid grid-cols-2 gap-6 relative">
-                                <!-- Market Context (Pro+) -->
-                                <div class="col-span-2 md:col-span-1 relative bg-white border border-gray-200 rounded-[24px] p-6 overflow-hidden transform transition-all hover:shadow-toss">
-                                     ${!hasMarket ? `
-                                        <div class="blur-overlay rounded-[24px]">
-                                            <span class="material-symbols-outlined text-gray-400 text-4xl mb-2">lock_open_right</span>
-                                            <h4 class="font-bold text-gray-900 mb-1">Market Context</h4>
-                                            <p class="text-xs text-center text-gray-500 mb-3 px-4">Investment news & Sales fit analysis</p>
-                                            <button onclick="scrollToPricing()" class="bg-blue-500 text-white text-xs font-bold py-2 px-4 rounded-lg shadow-lg hover:bg-blue-600">Unlock w/ Pro</button>
-                                        </div>
-                                     ` : ''}
-                                    <div class="${!hasMarket ? 'filter blur-sm opacity-50' : ''}">
+                        <!-- 2. Premium Intelligence (Ultra) -->
+                        <div class="mb-8 p-1">
+                            <h3 class="text-gray-900 font-bold text-lg mb-4 flex items-center gap-2">Investment & Insight <span class="text-xs bg-gray-900 text-white px-2 py-0.5 rounded-md font-bold">ULTRA</span></h3>
+                            <div class="relative bg-white border border-gray-200 rounded-toss p-6 overflow-hidden">
+                                ${!canViewInvestment ? getLockOverlay('Unlock with Ultra', 'See Funding, Sales Fit & Expert Recs') : ''}
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 ${!canViewInvestment ? 'filter blur-md opacity-40' : ''}">
+                                    <div>
                                         <div class="mb-6">
-                                            <div class="flex items-center gap-2 mb-2">
-                                                <span class="text-green-500 material-symbols-outlined text-[20px]">trending_up</span>
-                                                <h4 class="font-bold text-gray-900 text-sm">Investment Insight</h4>
-                                            </div>
-                                            <p class="text-gray-600 text-sm leading-relaxed">${lead.funding_insight}</p>
+                                            <h4 class="text-green-600 font-bold text-xs uppercase mb-2">Funding Insight</h4>
+                                            <p class="text-gray-800 font-medium leading-relaxed">${lead.funding_insight}</p>
                                         </div>
                                         <div>
-                                            <div class="flex items-center gap-2 mb-2">
-                                                <span class="text-blue-500 material-symbols-outlined text-[20px]">handshake</span>
-                                                <h4 class="font-bold text-gray-900 text-sm">Sales Fit Analysis</h4>
-                                            </div>
+                                            <h4 class="text-blue-600 font-bold text-xs uppercase mb-2">Sales Fit Analysis</h4>
                                             <p class="text-gray-600 text-sm leading-relaxed">${lead.sales_fit}</p>
                                         </div>
                                     </div>
-                                </div>
-
-                                <!-- Expert Strategy (Ultra) -->
-                                <div class="col-span-2 md:col-span-1 relative bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-[24px] p-6 text-white overflow-hidden shadow-lg">
-                                     ${!hasExpert ? `
-                                        <div class="blur-overlay rounded-[24px]" style="background: rgba(30,30,30,0.6);">
-                                            <span class="material-symbols-outlined text-gray-300 text-4xl mb-2">diamond</span>
-                                            <h4 class="font-bold text-white mb-1">Expert Strategy</h4>
-                                            <p class="text-xs text-center text-gray-300 mb-3 px-4">Recs & Persona insights</p>
-                                            <button onclick="scrollToPricing()" class="bg-white text-gray-900 text-xs font-bold py-2 px-4 rounded-lg shadow-lg hover:bg-gray-200">Unlock w/ Ultra</button>
-                                        </div>
-                                     ` : ''}
-                                    <div class="${!hasExpert ? 'filter blur-sm opacity-30' : ''}">
-                                        <div class="mb-6">
-                                            <div class="flex items-center gap-2 mb-2">
-                                                <span class="text-yellow-400 material-symbols-outlined text-[20px]">lightbulb</span>
-                                                <h4 class="font-bold text-white text-sm">Expert Rec</h4>
+                                    <div class="bg-gray-50 rounded-[20px] p-5 border border-gray-100">
+                                        <div class="flex items-start gap-3">
+                                            <span class="material-symbols-outlined text-yellow-500 mt-1">lightbulb</span>
+                                            <div>
+                                                <h4 class="font-bold text-gray-900 text-sm mb-1">Expert Recommendation</h4>
+                                                <p class="text-gray-600 text-xs italic leading-relaxed">"${lead.expert_rec}"</p>
                                             </div>
-                                            <p class="text-gray-300 text-sm leading-relaxed border-l-2 border-yellow-400 pl-3">"${lead.expert_rec}"</p>
                                         </div>
-                                        <div>
-                                            <div class="flex items-center gap-2 mb-2">
-                                                <span class="text-purple-400 material-symbols-outlined text-[20px]">face</span>
-                                                <h4 class="font-bold text-white text-sm">Decision Maker Persona</h4>
+                                        <div class="flex items-start gap-3 mt-4 pt-4 border-t border-gray-200">
+                                            <span class="material-symbols-outlined text-purple-500 mt-1">face</span>
+                                            <div>
+                                                <h4 class="font-bold text-gray-900 text-sm mb-1">Decision Maker Persona</h4>
+                                                <p class="text-gray-600 text-xs leading-relaxed">${lead.dm_persona}</p>
                                             </div>
-                                            <p class="text-gray-300 text-sm leading-relaxed bg-white/10 p-3 rounded-lg">${lead.dm_persona}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Contact Section (Ultra) -->
+                        <!-- 3. Direct Contact (Ultra) -->
                         <div class="relative">
-                             ${!hasContact ? `
-                                <div class="blur-overlay rounded-[24px]" style="background: rgba(242, 244, 246, 0.7);">
-                                    <span class="material-symbols-outlined text-gray-400 text-5xl mb-3">key</span>
-                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Direct Contact Access</h3>
-                                    <p class="text-gray-500 mb-4 text-center max-w-xs">Upgrade to <strong>Ultra</strong> to get direct phone numbers and emails.</p>
-                                    <button onclick="scrollToPricing()" class="bg-gray-900 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-gray-800 transition-transform hover:scale-105 active:scale-95">Upgrade to Ultra</button>
-                                </div>
-                            ` : ''}
-
-                            <div class="bg-white border border-gray-200 rounded-[24px] p-6 ${!hasContact ? 'filter blur-md opacity-40 select-none' : ''}">
+                             ${!canViewContact ? getLockOverlay('Unlock Contact Info', 'Get Direct Phone & Email Access') : ''}
+                            <div class="bg-gray-900 text-white rounded-toss p-6 flex items-center justify-between ${!canViewContact ? 'filter blur-lg opacity-40' : ''}">
                                 <div class="flex items-center gap-4">
-                                    <img src="https://ui-avatars.com/api/?name=${lead.contact.name}&background=random" class="w-16 h-16 rounded-full">
+                                    <img src="https://ui-avatars.com/api/?name=${lead.contact.name}&background=random" class="w-14 h-14 rounded-full border-2 border-white/20">
                                     <div>
-                                        <h3 class="text-xl font-bold text-gray-900">${lead.contact.name}</h3>
-                                        <p class="text-gray-500 font-medium mb-1">${lead.contact.title}</p>
-                                        <div class="flex gap-4 text-blue-600 font-bold text-sm">
-                                            <a href="mailto:${lead.contact.email}" class="hover:underline">${lead.contact.email}</a>
-                                            <a href="tel:${lead.contact.phone}" class="hover:underline">${lead.contact.phone}</a>
-                                        </div>
+                                        <h3 class="text-lg font-bold">${lead.contact.name}</h3>
+                                        <p class="text-gray-400 text-sm">${lead.contact.title}</p>
                                     </div>
+                                </div>
+                                <div class="flex gap-3">
+                                    <a href="mailto:${lead.contact.email}" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><span class="material-symbols-outlined text-sm">mail</span></a>
+                                    <a href="tel:${lead.contact.phone}" class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"><span class="material-symbols-outlined text-sm">call</span></a>
                                 </div>
                             </div>
                         </div>
 
                     </div>
                 `;
-                
-                // Initialize Chart
-                const ctx = document.getElementById('scoreChart');
-                if (window.chartInstance) window.chartInstance.destroy();
-                
-                window.chartInstance = new Chart(ctx, {
-                    type: 'radar',
-                    data: {
-                        labels: ['Urgency', 'Scale', 'Fit'],
-                        datasets: [{
-                            label: 'Lead Score',
-                            data: [lead.scores.urgency, lead.scores.scale, lead.scores.fit],
-                            fill: true,
-                            backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                            borderColor: 'rgb(59, 130, 246)',
-                            pointBackgroundColor: 'rgb(59, 130, 246)',
-                            pointBorderColor: '#fff',
-                            pointHoverBackgroundColor: '#fff',
-                            pointHoverBorderColor: 'rgb(59, 130, 246)'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        elements: {
-                            line: { borderWidth: 2 }
-                        },
-                        scales: {
-                            r: {
-                                angleLines: { display: false },
-                                suggestedMin: 0,
-                                suggestedMax: 100,
-                                ticks: { display: false }
-                            }
-                        },
-                        plugins: {
-                            legend: { display: false }
-                        }
-                    }
-                });
-
+                initChart(lead);
             }, 50);
         }
 
-        // --- Utils --- (Same as before)
-        function handleAuthClick() {
-            const user = mockSupabase.auth.user();
-            if (user) { /* signOut handled in UI */ } 
-            else { openModal('login-modal', 'login-content'); }
+        function getLockOverlay(title, subtitle) {
+            return `
+                <div class="premium-lock">
+                    <div class="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center mb-3 text-toss-blue">
+                        <span class="material-symbols-outlined">lock</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">${title}</h3>
+                    <p class="text-gray-500 text-sm font-medium mb-4">${subtitle}</p>
+                    <button onclick="document.getElementById('pricing-section').scrollIntoView({behavior:'smooth'})" class="bg-toss-blue text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md hover:bg-blue-600 transition-colors transform hover:-translate-y-0.5">Upgrade Plan</button>
+                </div>
+            `;
         }
+
+        function initChart(lead) {
+            const ctx = document.getElementById('scoreChart');
+            if (window.chartInstance) window.chartInstance.destroy();
+            window.chartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Urgency', 'Scale', 'Fit'],
+                    datasets: [{
+                        data: [lead.scores.u, lead.scores.s, lead.scores.f],
+                        backgroundColor: 'rgba(49, 130, 246, 0.2)',
+                        borderColor: '#3182F6',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#3182F6',
+                        pointRadius: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { display: false },
+                            grid: { color: '#E5E8EB' },
+                            pointLabels: { font: { size: 9, weight: 'bold', family: 'Pretendard' }, color: '#6B7684' },
+                            suggestedMin: 50, suggestedMax: 100, ticks: { display: false }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function handleAuthClick() { openModal('login-modal', 'login-content'); }
         function openModal(mid, cid) {
             const m = document.getElementById(mid), c = document.getElementById(cid);
             m.classList.remove('hidden', 'flex'); m.classList.add('flex');
@@ -644,40 +625,69 @@
             m.classList.add('opacity-0'); c.classList.remove('scale-100'); c.classList.add('scale-95');
             setTimeout(() => { m.classList.add('hidden'); m.classList.remove('flex'); }, 300);
         }
-        function scrollToPricing() {
-            document.getElementById('pricing-section').scrollIntoView({ behavior: 'smooth' });
+        function toggleBilling(track) {
+            isAnnual = !isAnnual;
+            const circle = document.getElementById('toggle-circle');
+            circle.style.transform = isAnnual ? 'translateX(28px)' : 'translateX(0)';
+            track.classList.toggle('bg-blue-100', isAnnual);
+            track.classList.toggle('bg-gray-200', !isAnnual);
+            
+            // Update Prices
+            document.querySelectorAll('.price-val').forEach(el => {
+                const start = parseInt(el.innerText.replace('$',''));
+                const end = isAnnual ? el.dataset.y : el.dataset.m;
+                animateValue(el, start, end, 300);
+            });
+            document.querySelectorAll('.billing-period').forEach(el => el.innerText = isAnnual ? '/yr' : '/mo');
         }
+        
+        function animateValue(obj, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = '$' + Math.floor(progress * (end - start) + start);
+                if (progress < 1) window.requestAnimationFrame(step);
+            };
+            window.requestAnimationFrame(step);
+        }
+
         function showToast(msg) {
              const t = document.createElement('div');
-             t.className = 'fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full font-bold shadow-2xl animate-fade-in-up z-[200] flex items-center gap-2';
+             t.className = 'fixed bottom-24 right-8 bg-gray-800 text-white px-6 py-3 rounded-full font-bold shadow-xl animate-fade-in-up z-[60] flex items-center gap-3 text-sm';
              t.innerHTML = `<span class="material-symbols-outlined text-green-400">check_circle</span> ${msg}`;
              document.body.appendChild(t); setTimeout(() => t.remove(), 3000);
         }
-        function mockBilling(plan) { alert('Checkout flow for ' + plan); }
-        function toggleBilling(btn) {
-             isAnnual = !isAnnual;
-             document.getElementById('pricing-toggle-circle').style.transform = isAnnual ? 'translateX(24px)' : 'translateX(0)';
-             // Simplified pricing update logic handled in previous steps, focusing on Tier UI here
-        }
+        
         function refreshLeads() {
-             document.getElementById('refresh-icon').classList.add('animate-spin-fast');
-             setTimeout(() => { document.getElementById('refresh-icon').classList.remove('animate-spin-fast'); leads.sort(() => Math.random() - 0.5); renderList(); }, 1000);
+             const btn = document.getElementById('refresh-icon');
+             btn.classList.add('animate-spin');
+             setTimeout(() => { btn.classList.remove('animate-spin'); leads.sort(() => Math.random() - 0.5); renderList(); showToast("Leads Refreshed"); }, 800);
         }
 
+        function scrollToTop() { document.getElementById('dashboard-top').scrollIntoView({behavior:'smooth'}); }
+
+        // Styles
         const style = document.createElement('style');
         style.innerHTML = `
-            @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-            @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-            .animate-ticker { animation: ticker 20s linear infinite; }
+            @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+            .animate-ticker { animation: ticker 30s linear infinite; }
             .animate-ticker:hover { animation-play-state: paused; }
         `;
         document.head.appendChild(style);
-        
-        const news = ["TechFlow Inc. - Series B", "GreenLeaf - Office Move", "Nexus - New CMO"];
-        document.getElementById('news-ticker').innerHTML = [...news, ...news].map(i => `<span class="mr-10 font-medium opacity-80">${i}</span>`).join('');
+
+        const news = ["TechFlow: $30M Series B - High Intent", "Nexus Mktg: New CMO Hired - Needs Tools", "GreenLeaf: 15k sqft Office Lease - Expansion"];
+        document.getElementById('news-ticker').innerHTML = [...news, ...news, ...news].map(i => `
+            <div class="flex items-center gap-2 px-6">
+                <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                <span class="text-sm font-medium text-gray-700">${i}</span>
+            </div>
+        `).join('');
 
         renderList();
-
+        
+        // Init with Basic
+        // setTimeout(() => mockSupabase.auth.signIn('basic@example.com'), 1000); // Auto-login for demo? No, let user explore.
     </script>
 </body>
 </html>
